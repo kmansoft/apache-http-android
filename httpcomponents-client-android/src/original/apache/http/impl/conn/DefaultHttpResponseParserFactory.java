@@ -35,7 +35,7 @@ import original.apache.http.impl.DefaultHttpResponseFactory;
 import original.apache.http.io.HttpMessageParser;
 import original.apache.http.io.HttpMessageParserFactory;
 import original.apache.http.io.SessionInputBuffer;
-import original.apache.http.message.BasicLineParserHC4;
+import original.apache.http.message.BasicLineParser;
 import original.apache.http.message.LineParser;
 
 /**
@@ -55,7 +55,7 @@ public class DefaultHttpResponseParserFactory implements HttpMessageParserFactor
             final LineParser lineParser,
             final HttpResponseFactory responseFactory) {
         super();
-        this.lineParser = lineParser != null ? lineParser : BasicLineParserHC4.INSTANCE;
+        this.lineParser = lineParser != null ? lineParser : BasicLineParser.INSTANCE;
         this.responseFactory = responseFactory != null ? responseFactory
                 : DefaultHttpResponseFactory.INSTANCE;
     }

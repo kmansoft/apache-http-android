@@ -33,7 +33,7 @@ import original.apache.http.HttpEntity;
 import original.apache.http.HttpResponse;
 import original.apache.http.client.HttpClient;
 import original.apache.http.client.methods.CloseableHttpResponse;
-import original.apache.http.util.EntityUtilsHC4;
+import original.apache.http.util.EntityUtils;
 
 /**
  * Convenience methods for closing response and client objects.
@@ -72,7 +72,7 @@ public class HttpClientUtils {
             final HttpEntity entity = response.getEntity();
             if (entity != null) {
                 try {
-                    EntityUtilsHC4.consume(entity);
+                    EntityUtils.consume(entity);
                 } catch (final IOException ex) {
                 }
             }
@@ -105,7 +105,7 @@ public class HttpClientUtils {
         if (response != null) {
             try {
                 try {
-                    EntityUtilsHC4.consume(response.getEntity());
+                    EntityUtils.consume(response.getEntity());
                 } finally {
                     response.close();
                 }

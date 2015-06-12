@@ -51,7 +51,7 @@ import original.apache.http.impl.DefaultConnectionReuseStrategy;
 import original.apache.http.impl.execchain.MinimalClientExec;
 import original.apache.http.params.BasicHttpParams;
 import original.apache.http.params.HttpParams;
-import original.apache.http.protocol.BasicHttpContextHC4;
+import original.apache.http.protocol.BasicHttpContext;
 import original.apache.http.protocol.HttpContext;
 import original.apache.http.protocol.HttpRequestExecutor;
 import original.apache.http.util.Args;
@@ -95,7 +95,7 @@ class MinimalHttpClient extends CloseableHttpClient {
         try {
             final HttpRequestWrapper wrapper = HttpRequestWrapper.wrap(request);
             final HttpClientContext localcontext = HttpClientContext.adapt(
-                context != null ? context : new BasicHttpContextHC4());
+                context != null ? context : new BasicHttpContext());
             final HttpRoute route = new HttpRoute(target);
             RequestConfig config = null;
             if (request instanceof Configurable) {

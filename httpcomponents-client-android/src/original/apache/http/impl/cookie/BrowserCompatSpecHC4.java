@@ -41,7 +41,7 @@ import original.apache.http.cookie.CookieOrigin;
 import original.apache.http.cookie.MalformedCookieException;
 import original.apache.http.cookie.SM;
 import original.apache.http.message.BasicHeaderElement;
-import original.apache.http.message.BasicHeaderValueFormatterHC4;
+import original.apache.http.message.BasicHeaderValueFormatter;
 import original.apache.http.message.BufferedHeader;
 import original.apache.http.message.ParserCursor;
 import original.apache.http.util.Args;
@@ -185,7 +185,7 @@ public class BrowserCompatSpecHC4 extends CookieSpecBaseHC4 {
             final String cookieName = cookie.getName();
             final String cookieValue = cookie.getValue();
             if (cookie.getVersion() > 0 && !isQuoteEnclosed(cookieValue)) {
-                BasicHeaderValueFormatterHC4.INSTANCE.formatHeaderElement(
+                BasicHeaderValueFormatter.INSTANCE.formatHeaderElement(
                         buffer,
                         new BasicHeaderElement(cookieName, cookieValue),
                         false);

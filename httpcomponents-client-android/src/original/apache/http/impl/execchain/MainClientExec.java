@@ -68,9 +68,9 @@ import original.apache.http.protocol.HttpCoreContext;
 import original.apache.http.protocol.HttpProcessor;
 import original.apache.http.protocol.HttpRequestExecutor;
 import original.apache.http.protocol.ImmutableHttpProcessor;
-import original.apache.http.protocol.RequestTargetHostHC4;
+import original.apache.http.protocol.RequestTargetHost;
 import original.apache.http.util.Args;
-import original.apache.http.util.EntityUtilsHC4;
+import original.apache.http.util.EntityUtils;
 import android.util.Log;
 
 /**
@@ -117,7 +117,7 @@ public class MainClientExec implements ClientExecChain {
         Args.notNull(userTokenHandler, "User token handler");
         this.authenticator      = new HttpAuthenticator();
         this.proxyHttpProcessor = new ImmutableHttpProcessor(
-                new RequestTargetHostHC4(), new RequestClientConnControl());
+                new RequestTargetHost(), new RequestClientConnControl());
         this.routeDirector      = new BasicRouteDirector();
         this.requestExecutor    = requestExecutor;
         this.connManager        = connManager;
@@ -282,7 +282,7 @@ public class MainClientExec implements ClientExecChain {
                     // Make sure the response body is fully consumed, if present
                     final HttpEntity entity = response.getEntity();
                     if (connHolder.isReusable()) {
-                        EntityUtilsHC4.consume(entity);
+                        EntityUtils.consume(entity);
                     } else {
                         managedConn.close();
                         if (proxyAuthState.getState() == AuthProtocolState.SUCCESS
@@ -485,7 +485,7 @@ public class MainClientExec implements ClientExecChain {
                             }
                             // Consume response content
                             final HttpEntity entity = response.getEntity();
-                            EntityUtilsHC4.consume(entity);
+                            EntityUtils.consume(entity);
                         } else {
                             managedConn.close();
                         }

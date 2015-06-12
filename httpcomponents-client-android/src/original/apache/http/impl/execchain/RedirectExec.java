@@ -51,7 +51,7 @@ import original.apache.http.client.utils.URIUtilsHC4;
 import original.apache.http.conn.routing.HttpRoute;
 import original.apache.http.conn.routing.HttpRoutePlanner;
 import original.apache.http.util.Args;
-import original.apache.http.util.EntityUtilsHC4;
+import original.apache.http.util.EntityUtils;
 
 /**
  * Request executor in the request execution chain that is responsible
@@ -159,7 +159,7 @@ public class RedirectExec implements ClientExecChain {
                     if (Log.isLoggable(TAG, Log.DEBUG)) {
                         Log.d(TAG, "Redirecting to '" + uri + "' via " + currentRoute);
                     }
-                    EntityUtilsHC4.consume(response.getEntity());
+                    EntityUtils.consume(response.getEntity());
                     response.close();
                 } else {
                     return response;
@@ -174,7 +174,7 @@ public class RedirectExec implements ClientExecChain {
                 // Protocol exception related to a direct.
                 // The underlying connection may still be salvaged.
                 try {
-                    EntityUtilsHC4.consume(response.getEntity());
+                    EntityUtils.consume(response.getEntity());
                 } catch (final IOException ioex) {
                     if (Log.isLoggable(TAG, Log.DEBUG)) {
                         Log.d(TAG, "I/O error while releasing connection", ioex);

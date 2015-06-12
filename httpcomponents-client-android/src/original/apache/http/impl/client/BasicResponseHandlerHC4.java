@@ -35,7 +35,7 @@ import original.apache.http.StatusLine;
 import original.apache.http.annotation.Immutable;
 import original.apache.http.client.HttpResponseException;
 import original.apache.http.client.ResponseHandler;
-import original.apache.http.util.EntityUtilsHC4;
+import original.apache.http.util.EntityUtils;
 
 /**
  * A {@link ResponseHandler} that returns the response body as a String
@@ -63,11 +63,11 @@ public class BasicResponseHandlerHC4 implements ResponseHandler<String> {
         final StatusLine statusLine = response.getStatusLine();
         final HttpEntity entity = response.getEntity();
         if (statusLine.getStatusCode() >= 300) {
-            EntityUtilsHC4.consume(entity);
+            EntityUtils.consume(entity);
             throw new HttpResponseException(statusLine.getStatusCode(),
                     statusLine.getReasonPhrase());
         }
-        return entity == null ? null : EntityUtilsHC4.toString(entity);
+        return entity == null ? null : EntityUtils.toString(entity);
     }
 
 }

@@ -49,10 +49,10 @@ import original.apache.http.auth.AuthenticationException;
 import original.apache.http.auth.ChallengeState;
 import original.apache.http.auth.Credentials;
 import original.apache.http.auth.MalformedChallengeException;
-import original.apache.http.message.BasicHeaderValueFormatterHC4;
+import original.apache.http.message.BasicHeaderValueFormatter;
 import original.apache.http.message.BasicNameValuePair;
 import original.apache.http.message.BufferedHeader;
-import original.apache.http.protocol.BasicHttpContextHC4;
+import original.apache.http.protocol.BasicHttpContext;
 import original.apache.http.protocol.HttpContext;
 import original.apache.http.util.Args;
 import original.apache.http.util.CharArrayBuffer;
@@ -183,7 +183,7 @@ public class DigestSchemeHC4 extends RFC2617SchemeHC4 {
     @Deprecated
     public Header authenticate(
             final Credentials credentials, final HttpRequest request) throws AuthenticationException {
-        return authenticate(credentials, request, new BasicHttpContextHC4());
+        return authenticate(credentials, request, new BasicHttpContext());
     }
 
     /**
@@ -426,7 +426,7 @@ public class DigestSchemeHC4 extends RFC2617SchemeHC4 {
             final String name = param.getName();
             final boolean noQuotes = ("nc".equals(name) || "qop".equals(name)
                     || "algorithm".equals(name));
-            BasicHeaderValueFormatterHC4.INSTANCE.formatNameValuePair(buffer, param, !noQuotes);
+            BasicHeaderValueFormatter.INSTANCE.formatNameValuePair(buffer, param, !noQuotes);
         }
         return new BufferedHeader(buffer);
     }

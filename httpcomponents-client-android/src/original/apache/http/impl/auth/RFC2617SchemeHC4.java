@@ -38,7 +38,7 @@ import original.apache.http.annotation.NotThreadSafe;
 import original.apache.http.auth.ChallengeState;
 import original.apache.http.auth.MalformedChallengeException;
 import original.apache.http.auth.params.AuthPNames;
-import original.apache.http.message.BasicHeaderValueParserHC4;
+import original.apache.http.message.BasicHeaderValueParser;
 import original.apache.http.message.HeaderValueParser;
 import original.apache.http.message.ParserCursor;
 import original.apache.http.util.CharArrayBuffer;
@@ -104,7 +104,7 @@ public abstract class RFC2617SchemeHC4 extends AuthSchemeBaseHC4 {
     @Override
     protected void parseChallenge(
             final CharArrayBuffer buffer, final int pos, final int len) throws MalformedChallengeException {
-        final HeaderValueParser parser = BasicHeaderValueParserHC4.INSTANCE;
+        final HeaderValueParser parser = BasicHeaderValueParser.INSTANCE;
         final ParserCursor cursor = new ParserCursor(pos, buffer.length());
         final HeaderElement[] elements = parser.parseElements(buffer, cursor);
         if (elements.length == 0) {

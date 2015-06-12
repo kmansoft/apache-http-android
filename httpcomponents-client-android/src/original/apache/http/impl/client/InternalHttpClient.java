@@ -64,7 +64,7 @@ import original.apache.http.conn.scheme.SchemeRegistry;
 import original.apache.http.cookie.CookieSpecProvider;
 import original.apache.http.impl.execchain.ClientExecChain;
 import original.apache.http.params.HttpParamsNames;
-import original.apache.http.protocol.BasicHttpContextHC4;
+import original.apache.http.protocol.BasicHttpContext;
 import original.apache.http.protocol.HttpContext;
 import original.apache.http.util.Args;
 
@@ -162,7 +162,7 @@ class InternalHttpClient extends CloseableHttpClient {
         try {
             final HttpRequestWrapper wrapper = HttpRequestWrapper.wrap(request);
             final HttpClientContext localcontext = HttpClientContext.adapt(
-                    context != null ? context : new BasicHttpContextHC4());
+                    context != null ? context : new BasicHttpContext());
             RequestConfig config = null;
             if (request instanceof Configurable) {
                 config = ((Configurable) request).getConfig();

@@ -37,7 +37,7 @@ import original.apache.http.HttpEntity;
 import original.apache.http.HttpResponse;
 import original.apache.http.annotation.NotThreadSafe;
 import original.apache.http.client.methods.CloseableHttpResponse;
-import original.apache.http.util.EntityUtilsHC4;
+import original.apache.http.util.EntityUtils;
 
 /**
  * @since 4.3
@@ -54,7 +54,7 @@ class CloseableHttpResponseProxy implements InvocationHandler {
 
     public void close() throws IOException {
         final HttpEntity entity = this.original.getEntity();
-        EntityUtilsHC4.consume(entity);
+        EntityUtils.consume(entity);
     }
 
     public Object invoke(

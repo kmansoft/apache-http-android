@@ -43,7 +43,7 @@ import original.apache.http.conn.routing.RouteInfo;
 import original.apache.http.cookie.CookieOrigin;
 import original.apache.http.cookie.CookieSpec;
 import original.apache.http.cookie.CookieSpecProvider;
-import original.apache.http.protocol.BasicHttpContextHC4;
+import original.apache.http.protocol.BasicHttpContext;
 import original.apache.http.protocol.HttpContext;
 import original.apache.http.protocol.HttpCoreContext;
 
@@ -144,7 +144,7 @@ public class HttpClientContext extends HttpCoreContext {
     }
 
     public static HttpClientContext create() {
-        return new HttpClientContext(new BasicHttpContextHC4());
+        return new HttpClientContext(new BasicHttpContext());
     }
 
     public HttpClientContext(final HttpContext context) {

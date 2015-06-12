@@ -46,7 +46,7 @@ import original.apache.http.client.methods.HttpUriRequest;
 import original.apache.http.client.utils.URIUtilsHC4;
 import original.apache.http.protocol.HttpContext;
 import original.apache.http.util.Args;
-import original.apache.http.util.EntityUtilsHC4;
+import original.apache.http.util.EntityUtils;
 
 /**
  * Base implementation of {@link HttpClient} that also implements {@link Closeable}.
@@ -218,7 +218,7 @@ public abstract class CloseableHttpClient implements HttpClient, Closeable {
         } catch (final Exception t) {
             final HttpEntity entity = response.getEntity();
             try {
-                EntityUtilsHC4.consume(entity);
+                EntityUtils.consume(entity);
             } catch (final Exception t2) {
                 // Log this exception. The original exception is more
                 // important and will be thrown to the caller.
@@ -238,7 +238,7 @@ public abstract class CloseableHttpClient implements HttpClient, Closeable {
         // Handling the response was successful. Ensure that the content has
         // been fully consumed.
         final HttpEntity entity = response.getEntity();
-        EntityUtilsHC4.consume(entity);
+        EntityUtils.consume(entity);
         return result;
     }
 

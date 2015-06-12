@@ -60,11 +60,11 @@ import original.apache.http.protocol.HttpCoreContext;
 import original.apache.http.protocol.HttpProcessor;
 import original.apache.http.protocol.HttpRequestExecutor;
 import original.apache.http.protocol.ImmutableHttpProcessor;
-import original.apache.http.protocol.RequestContentHC4;
-import original.apache.http.protocol.RequestTargetHostHC4;
-import original.apache.http.protocol.RequestUserAgentHC4;
+import original.apache.http.protocol.RequestContent;
+import original.apache.http.protocol.RequestTargetHost;
+import original.apache.http.protocol.RequestUserAgent;
 import original.apache.http.util.Args;
-import original.apache.http.util.VersionInfoHC4;
+import original.apache.http.util.VersionInfo;
 
 /**
  * Request executor that implements the most fundamental aspects of
@@ -94,10 +94,10 @@ public class MinimalClientExec implements ClientExecChain {
         Args.notNull(reuseStrategy, "Connection reuse strategy");
         Args.notNull(keepAliveStrategy, "Connection keep alive strategy");
         this.httpProcessor = new ImmutableHttpProcessor(
-                new RequestContentHC4(),
-                new RequestTargetHostHC4(),
+                new RequestContent(),
+                new RequestTargetHost(),
                 new RequestClientConnControl(),
-                new RequestUserAgentHC4(VersionInfoHC4.getUserAgent(
+                new RequestUserAgent(VersionInfo.getUserAgent(
                         "Apache-HttpClient", "org.apache.http.client", getClass())));
         this.requestExecutor    = requestExecutor;
         this.connManager        = connManager;

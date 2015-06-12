@@ -39,7 +39,7 @@ import original.apache.http.auth.ChallengeState;
 import original.apache.http.auth.Credentials;
 import original.apache.http.auth.MalformedChallengeException;
 import original.apache.http.message.BufferedHeader;
-import original.apache.http.protocol.BasicHttpContextHC4;
+import original.apache.http.protocol.BasicHttpContext;
 import original.apache.http.protocol.HttpContext;
 import original.apache.http.util.Args;
 import original.apache.http.util.CharArrayBuffer;
@@ -131,7 +131,7 @@ public class BasicSchemeHC4 extends RFC2617SchemeHC4 {
     @Deprecated
     public Header authenticate(
             final Credentials credentials, final HttpRequest request) throws AuthenticationException {
-        return authenticate(credentials, request, new BasicHttpContextHC4());
+        return authenticate(credentials, request, new BasicHttpContext());
     }
 
     /**

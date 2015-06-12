@@ -45,12 +45,12 @@ import original.apache.http.HttpEntity;
 import original.apache.http.NameValuePair;
 import original.apache.http.annotation.Immutable;
 import original.apache.http.entity.ContentType;
-import original.apache.http.message.BasicHeaderValueParserHC4;
+import original.apache.http.message.BasicHeaderValueParser;
 import original.apache.http.message.BasicNameValuePair;
 import original.apache.http.message.ParserCursor;
 import original.apache.http.protocol.HTTP;
 import original.apache.http.util.CharArrayBuffer;
-import original.apache.http.util.EntityUtilsHC4;
+import original.apache.http.util.EntityUtils;
 
 /**
  * A collection of utilities for encoding URLs.
@@ -111,7 +111,7 @@ public class URLEncodedUtilsHC4 {
             final HttpEntity entity) throws IOException {
         final ContentType contentType = ContentType.get(entity);
         if (contentType != null && contentType.getMimeType().equalsIgnoreCase(CONTENT_TYPE)) {
-            final String content = EntityUtilsHC4.toString(entity, Consts.ASCII);
+            final String content = EntityUtils.toString(entity, Consts.ASCII);
             if (content != null && content.length() > 0) {
                 Charset charset = contentType.getCharset();
                 if (charset == null) {
@@ -240,7 +240,7 @@ public class URLEncodedUtilsHC4 {
         if (s == null) {
             return Collections.emptyList();
         }
-        final BasicHeaderValueParserHC4 parser = BasicHeaderValueParserHC4.INSTANCE;
+        final BasicHeaderValueParser parser = BasicHeaderValueParser.INSTANCE;
         final CharArrayBuffer buffer = new CharArrayBuffer(s.length());
         buffer.append(s);
         final ParserCursor cursor = new ParserCursor(0, buffer.length());
