@@ -30,7 +30,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.12.2'
+        classpath 'com.android.tools.build:gradle:1.1+'
     }
 }
 
@@ -63,6 +63,13 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_5
         targetCompatibility JavaVersion.VERSION_1_5
     }
+
+	sourceSets {
+		main {
+			manifest.srcFile 'AndroidManifest.xml'
+			java.srcDirs = ['src']
+		}
+	}
 }
 
 configurations {
@@ -118,7 +125,7 @@ android.libraryVariants.all { variant ->
         task createAndroidJavadoc(type: Javadoc) {
             dependsOn variant.javaCompile
             source = variant.javaCompile.source
-            classpath = files(android.plugin.bootClasspath, variant.javaCompile.classpath.files)
+            classpath = files(android.getBootClasspath(), variant.javaCompile.classpath.files)
             title "Apache HttpClient for Android $HC_VER API"
             configure (options) {
                 docTitle "Apache HttpClient for Android $HC_VER API"
