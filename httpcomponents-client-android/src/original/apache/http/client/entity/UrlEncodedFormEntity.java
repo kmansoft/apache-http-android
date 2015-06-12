@@ -34,7 +34,7 @@ import original.apache.http.NameValuePair;
 import original.apache.http.annotation.NotThreadSafe;
 import original.apache.http.client.utils.URLEncodedUtilsHC4;
 import original.apache.http.entity.ContentType;
-import original.apache.http.entity.StringEntityHC4;
+import original.apache.http.entity.StringEntity;
 import original.apache.http.protocol.HTTP;
 
 /**
@@ -43,8 +43,8 @@ import original.apache.http.protocol.HTTP;
  *
  * @since 4.0
  */
-@NotThreadSafe // AbstractHttpEntityHC4 is not thread-safe
-public class UrlEncodedFormEntityHC4 extends StringEntityHC4 {
+@NotThreadSafe // AbstractHttpEntity is not thread-safe
+public class UrlEncodedFormEntity extends StringEntity {
 
     /**
      * Constructs a new {@link UrlEncodedFormEntity} with the list
@@ -54,7 +54,7 @@ public class UrlEncodedFormEntityHC4 extends StringEntityHC4 {
      * @param charset encoding the name/value pairs be encoded with
      * @throws UnsupportedEncodingException if the encoding isn't supported
      */
-    public UrlEncodedFormEntityHC4 (
+    public UrlEncodedFormEntity (
         final List <? extends NameValuePair> parameters,
         final String charset) throws UnsupportedEncodingException {
         super(URLEncodedUtilsHC4.format(parameters,
@@ -71,7 +71,7 @@ public class UrlEncodedFormEntityHC4 extends StringEntityHC4 {
      *
      * @since 4.2
      */
-    public UrlEncodedFormEntityHC4 (
+    public UrlEncodedFormEntity (
         final Iterable <? extends NameValuePair> parameters,
         final Charset charset) {
         super(URLEncodedUtilsHC4.format(parameters,
@@ -86,7 +86,7 @@ public class UrlEncodedFormEntityHC4 extends StringEntityHC4 {
      * @param parameters list of name/value pairs
      * @throws UnsupportedEncodingException if the default encoding isn't supported
      */
-    public UrlEncodedFormEntityHC4 (
+    public UrlEncodedFormEntity (
         final List <? extends NameValuePair> parameters) throws UnsupportedEncodingException {
         this(parameters, (Charset) null);
     }
@@ -99,7 +99,7 @@ public class UrlEncodedFormEntityHC4 extends StringEntityHC4 {
      *
      * @since 4.2
      */
-    public UrlEncodedFormEntityHC4 (
+    public UrlEncodedFormEntity (
         final Iterable <? extends NameValuePair> parameters) {
         this(parameters, null);
     }

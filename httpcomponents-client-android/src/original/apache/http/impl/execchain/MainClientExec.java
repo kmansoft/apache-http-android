@@ -32,7 +32,6 @@ import java.io.InterruptedIOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-import android.util.Log;
 import original.apache.http.ConnectionReuseStrategy;
 import original.apache.http.HttpClientConnection;
 import original.apache.http.HttpEntity;
@@ -61,7 +60,7 @@ import original.apache.http.conn.routing.BasicRouteDirector;
 import original.apache.http.conn.routing.HttpRoute;
 import original.apache.http.conn.routing.HttpRouteDirector;
 import original.apache.http.conn.routing.RouteTracker;
-import original.apache.http.entity.BufferedHttpEntityHC4;
+import original.apache.http.entity.BufferedHttpEntity;
 import original.apache.http.impl.auth.HttpAuthenticator;
 import original.apache.http.impl.conn.ConnectionShutdownException;
 import original.apache.http.message.BasicHttpRequest;
@@ -72,6 +71,7 @@ import original.apache.http.protocol.ImmutableHttpProcessor;
 import original.apache.http.protocol.RequestTargetHostHC4;
 import original.apache.http.util.Args;
 import original.apache.http.util.EntityUtilsHC4;
+import android.util.Log;
 
 /**
  * The last request executor in the HTTP request execution chain
@@ -502,7 +502,7 @@ public class MainClientExec implements ClientExecChain {
             // Buffer response content
             final HttpEntity entity = response.getEntity();
             if (entity != null) {
-                response.setEntity(new BufferedHttpEntityHC4(entity));
+                response.setEntity(new BufferedHttpEntity(entity));
             }
 
             managedConn.close();

@@ -60,7 +60,7 @@ import java.util.zip.GZIPOutputStream;
 
 import original.apache.http.Header;
 import original.apache.http.HttpEntity;
-import original.apache.http.entity.HttpEntityWrapperHC4;
+import original.apache.http.entity.HttpEntityWrapper;
 import original.apache.http.message.BasicHeader;
 import original.apache.http.protocol.HTTP;
 import original.apache.http.util.Args;
@@ -71,7 +71,7 @@ import original.apache.http.util.Args;
  *
  * @since 4.0
  */
-public class GzipCompressingEntity extends HttpEntityWrapperHC4 {
+public class GzipCompressingEntity extends HttpEntityWrapper {
 
     private static final String GZIP_CODEC = "gzip";
 

@@ -30,8 +30,6 @@ package original.apache.http.impl.client;
 import java.io.IOException;
 import java.net.Socket;
 
-import original.apache.http.params.HttpParams;
-
 import original.apache.http.ConnectionReuseStrategy;
 import original.apache.http.HttpEntity;
 import original.apache.http.HttpException;
@@ -55,7 +53,7 @@ import original.apache.http.conn.ManagedHttpClientConnection;
 import original.apache.http.conn.routing.HttpRoute;
 import original.apache.http.conn.routing.RouteInfo.LayerType;
 import original.apache.http.conn.routing.RouteInfo.TunnelType;
-import original.apache.http.entity.BufferedHttpEntityHC4;
+import original.apache.http.entity.BufferedHttpEntity;
 import original.apache.http.impl.DefaultConnectionReuseStrategyHC4;
 import original.apache.http.impl.auth.BasicSchemeFactoryHC4;
 import original.apache.http.impl.auth.DigestSchemeFactoryHC4;
@@ -66,6 +64,7 @@ import original.apache.http.impl.execchain.TunnelRefusedException;
 import original.apache.http.message.BasicHttpRequest;
 import original.apache.http.params.BasicHttpParams;
 import original.apache.http.params.HttpParamConfig;
+import original.apache.http.params.HttpParams;
 import original.apache.http.protocol.BasicHttpContextHC4;
 import original.apache.http.protocol.HttpContext;
 import original.apache.http.protocol.HttpCoreContext;
@@ -238,7 +237,7 @@ public class ProxyClient {
             // Buffer response content
             final HttpEntity entity = response.getEntity();
             if (entity != null) {
-                response.setEntity(new BufferedHttpEntityHC4(entity));
+                response.setEntity(new BufferedHttpEntity(entity));
             }
 
             conn.close();

@@ -36,14 +36,14 @@ import java.util.List;
 import original.apache.http.HttpEntity;
 import original.apache.http.NameValuePair;
 import original.apache.http.annotation.NotThreadSafe;
-import original.apache.http.entity.AbstractHttpEntityHC4;
-import original.apache.http.entity.BasicHttpEntityHC4;
-import original.apache.http.entity.ByteArrayEntityHC4;
+import original.apache.http.entity.AbstractHttpEntity;
+import original.apache.http.entity.BasicHttpEntity;
+import original.apache.http.entity.ByteArrayEntity;
 import original.apache.http.entity.ContentType;
-import original.apache.http.entity.FileEntityHC4;
-import original.apache.http.entity.InputStreamEntityHC4;
-import original.apache.http.entity.SerializableEntityHC4;
-import original.apache.http.entity.StringEntityHC4;
+import original.apache.http.entity.FileEntity;
+import original.apache.http.entity.InputStreamEntity;
+import original.apache.http.entity.SerializableEntity;
+import original.apache.http.entity.StringEntity;
 
 /**
  * Builder for {@link HttpEntity} instances.
@@ -310,23 +310,23 @@ public class EntityBuilder {
      * Creates new instance of {@link HttpEntity} based on the current state.
      */
     public HttpEntity build() {
-        final AbstractHttpEntityHC4 e;
+        final AbstractHttpEntity e;
         if (this.text != null) {
-            e = new StringEntityHC4(this.text, getContentOrDefault(ContentType.DEFAULT_TEXT));
+            e = new StringEntity(this.text, getContentOrDefault(ContentType.DEFAULT_TEXT));
         } else if (this.binary != null) {
-            e = new ByteArrayEntityHC4(this.binary, getContentOrDefault(ContentType.DEFAULT_BINARY));
+            e = new ByteArrayEntity(this.binary, getContentOrDefault(ContentType.DEFAULT_BINARY));
         } else if (this.stream != null) {
-            e = new InputStreamEntityHC4(this.stream, 1, getContentOrDefault(ContentType.DEFAULT_BINARY));
+            e = new InputStreamEntity(this.stream, 1, getContentOrDefault(ContentType.DEFAULT_BINARY));
         } else if (this.parameters != null) {
-            e = new UrlEncodedFormEntityHC4(this.parameters,
+            e = new UrlEncodedFormEntity(this.parameters,
                     this.contentType != null ? this.contentType.getCharset() : null);
         } else if (this.serializable != null) {
-            e = new SerializableEntityHC4(this.serializable);
+            e = new SerializableEntity(this.serializable);
             e.setContentType(ContentType.DEFAULT_BINARY.toString());
         } else if (this.file != null) {
-            e = new FileEntityHC4(this.file, getContentOrDefault(ContentType.DEFAULT_BINARY));
+            e = new FileEntity(this.file, getContentOrDefault(ContentType.DEFAULT_BINARY));
         } else {
-            e = new BasicHttpEntityHC4();
+            e = new BasicHttpEntity();
         }
         if (e.getContentType() != null && this.contentType != null) {
             e.setContentType(this.contentType.toString());

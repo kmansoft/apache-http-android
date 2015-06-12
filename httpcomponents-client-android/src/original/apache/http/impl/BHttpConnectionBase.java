@@ -47,7 +47,7 @@ import original.apache.http.HttpInetConnection;
 import original.apache.http.HttpMessage;
 import original.apache.http.annotation.NotThreadSafe;
 import original.apache.http.config.MessageConstraints;
-import original.apache.http.entity.BasicHttpEntityHC4;
+import original.apache.http.entity.BasicHttpEntity;
 import original.apache.http.entity.ContentLengthStrategy;
 import original.apache.http.impl.entity.LaxContentLengthStrategyHC4;
 import original.apache.http.impl.entity.StrictContentLengthStrategyHC4;
@@ -210,7 +210,7 @@ public class BHttpConnectionBase implements HttpConnection, HttpInetConnection {
     }
 
     protected HttpEntity prepareInput(final HttpMessage message) throws HttpException {
-        final BasicHttpEntityHC4 entity = new BasicHttpEntityHC4();
+        final BasicHttpEntity entity = new BasicHttpEntity();
 
         final long len = this.incomingContentStrategy.determineLength(message);
         final InputStream instream = createInputStream(len, this.inbuffer);

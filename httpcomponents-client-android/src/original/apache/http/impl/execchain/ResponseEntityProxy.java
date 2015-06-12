@@ -37,7 +37,7 @@ import original.apache.http.HttpResponse;
 import original.apache.http.annotation.NotThreadSafe;
 import original.apache.http.conn.EofSensorInputStreamHC4;
 import original.apache.http.conn.EofSensorWatcher;
-import original.apache.http.entity.HttpEntityWrapperHC4;
+import original.apache.http.entity.HttpEntityWrapper;
 
 /**
  * A wrapper class for {@link HttpEntity} enclosed in a response message.
@@ -45,7 +45,7 @@ import original.apache.http.entity.HttpEntityWrapperHC4;
  * @since 4.3
  */
 @NotThreadSafe
-class ResponseEntityProxy extends HttpEntityWrapperHC4 implements EofSensorWatcher {
+class ResponseEntityProxy extends HttpEntityWrapper implements EofSensorWatcher {
 
     private final ConnectionHolder connHolder;
 

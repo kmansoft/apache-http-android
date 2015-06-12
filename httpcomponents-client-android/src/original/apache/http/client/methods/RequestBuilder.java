@@ -43,7 +43,7 @@ import original.apache.http.NameValuePair;
 import original.apache.http.ProtocolVersion;
 import original.apache.http.annotation.NotThreadSafe;
 import original.apache.http.client.config.RequestConfig;
-import original.apache.http.client.entity.UrlEncodedFormEntityHC4;
+import original.apache.http.client.entity.UrlEncodedFormEntity;
 import original.apache.http.client.utils.URIBuilder;
 import original.apache.http.message.BasicHeader;
 import original.apache.http.message.BasicNameValuePair;
@@ -292,7 +292,7 @@ public class RequestBuilder {
         if (parameters != null && !parameters.isEmpty()) {
             if (entity == null && (HttpPostHC4.METHOD_NAME.equalsIgnoreCase(method)
                     || HttpPutHC4.METHOD_NAME.equalsIgnoreCase(method))) {
-                entity = new UrlEncodedFormEntityHC4(parameters, Charset.forName(HTTP.DEFAULT_CONTENT_CHARSET));
+                entity = new UrlEncodedFormEntity(parameters, Charset.forName(HTTP.DEFAULT_CONTENT_CHARSET));
             } else {
                 try {
                     uri = new URIBuilder(uri).addParameters(parameters).build();

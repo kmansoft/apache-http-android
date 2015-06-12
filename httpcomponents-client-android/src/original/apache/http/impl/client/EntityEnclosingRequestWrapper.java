@@ -36,7 +36,7 @@ import original.apache.http.HttpEntity;
 import original.apache.http.HttpEntityEnclosingRequest;
 import original.apache.http.ProtocolException;
 import original.apache.http.annotation.NotThreadSafe;
-import original.apache.http.entity.HttpEntityWrapperHC4;
+import original.apache.http.entity.HttpEntityWrapper;
 import original.apache.http.protocol.HTTP;
 
 /**
@@ -53,13 +53,13 @@ import original.apache.http.protocol.HTTP;
  */
 @Deprecated
 @NotThreadSafe // e.g. [gs]etEntity()
-public class EntityEnclosingRequestWrapperHC4 extends RequestWrapper
+public class EntityEnclosingRequestWrapper extends RequestWrapper
     implements HttpEntityEnclosingRequest {
 
     private HttpEntity entity;
     private boolean consumed;
 
-    public EntityEnclosingRequestWrapperHC4(final HttpEntityEnclosingRequest request)
+    public EntityEnclosingRequestWrapper(final HttpEntityEnclosingRequest request)
         throws ProtocolException {
         super(request);
         setEntity(request.getEntity());
@@ -84,7 +84,7 @@ public class EntityEnclosingRequestWrapperHC4 extends RequestWrapper
         return this.entity == null || this.entity.isRepeatable() || !this.consumed;
     }
 
-    class EntityWrapper extends HttpEntityWrapperHC4 {
+    class EntityWrapper extends HttpEntityWrapper {
 
         EntityWrapper(final HttpEntity entity) {
             super(entity);

@@ -31,7 +31,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import original.apache.http.HttpEntity;
-import original.apache.http.entity.HttpEntityWrapperHC4;
+import original.apache.http.entity.HttpEntityWrapper;
 import original.apache.http.util.Args;
 
 /**
@@ -39,7 +39,7 @@ import original.apache.http.util.Args;
  *
  * @since 4.1
  */
-abstract class DecompressingEntity extends HttpEntityWrapperHC4 {
+abstract class DecompressingEntity extends HttpEntityWrapper {
 
     /**
      * Default buffer size.

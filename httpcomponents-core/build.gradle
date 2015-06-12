@@ -71,7 +71,7 @@ android.libraryVariants.all { variant ->
             from 'NOTICE.txt'
             from 'LICENSE.txt'
             rename '(NOTICE|LICENSE).txt', 'META-INF/$1'
-
+            exclude 'org/**'
             manifest {
                 from sharedManifest
             }
