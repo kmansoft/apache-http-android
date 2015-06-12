@@ -27,8 +27,6 @@
 
 package original.apache.http.impl.client;
 
-import android.net.SSLCertificateSocketFactory;
-
 import java.io.Closeable;
 import java.net.ProxySelector;
 import java.util.ArrayList;
@@ -38,8 +36,6 @@ import java.util.List;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
-
-import original.apache.http.conn.ssl.X509HostnameVerifier;
 
 import original.apache.http.ConnectionReuseStrategy;
 import original.apache.http.Header;
@@ -80,9 +76,10 @@ import original.apache.http.conn.socket.ConnectionSocketFactory;
 import original.apache.http.conn.socket.LayeredConnectionSocketFactory;
 import original.apache.http.conn.socket.PlainConnectionSocketFactory;
 import original.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import original.apache.http.conn.ssl.X509HostnameVerifier;
 import original.apache.http.cookie.CookieSpecProvider;
-import original.apache.http.impl.DefaultConnectionReuseStrategyHC4;
-import original.apache.http.impl.NoConnectionReuseStrategyHC4;
+import original.apache.http.impl.DefaultConnectionReuseStrategy;
+import original.apache.http.impl.NoConnectionReuseStrategy;
 import original.apache.http.impl.auth.BasicSchemeFactoryHC4;
 import original.apache.http.impl.auth.DigestSchemeFactoryHC4;
 import original.apache.http.impl.auth.NTLMSchemeFactory;
@@ -107,11 +104,12 @@ import original.apache.http.impl.execchain.ServiceUnavailableRetryExec;
 import original.apache.http.protocol.HttpProcessor;
 import original.apache.http.protocol.HttpProcessorBuilder;
 import original.apache.http.protocol.HttpRequestExecutor;
-import original.apache.http.protocol.RequestContentHC4;
-import original.apache.http.protocol.RequestTargetHostHC4;
-import original.apache.http.protocol.RequestUserAgentHC4;
+import original.apache.http.protocol.RequestContent;
+import original.apache.http.protocol.RequestTargetHost;
+import original.apache.http.protocol.RequestUserAgent;
 import original.apache.http.util.TextUtils;
-import original.apache.http.util.VersionInfoHC4;
+import original.apache.http.util.VersionInfo;
+import android.net.SSLCertificateSocketFactory;
 
 /**
  * Builder for {@link CloseableHttpClient} instances.
@@ -201,10 +199,10 @@ public class HttpClientBuilder {
 
     static final String DEFAULT_USER_AGENT;
     static {
-        final VersionInfoHC4 vi = VersionInfoHC4.loadVersionInfo
+        final VersionInfo vi = VersionInfo.loadVersionInfo
                 ("org.apache.http.client", HttpClientBuilder.class.getClassLoader());
         final String release = (vi != null) ?
-                vi.getRelease() : VersionInfoHC4.UNAVAILABLE;
+                vi.getRelease() : VersionInfo.UNAVAILABLE;
         DEFAULT_USER_AGENT = "Apache-HttpClient/" + release + " (java 1.5)";
     }
 
@@ -758,12 +756,12 @@ public class HttpClientBuilder {
             if (systemProperties) {
                 final String s = System.getProperty("http.keepAlive", "true");
                 if ("true".equalsIgnoreCase(s)) {
-                    reuseStrategy = DefaultConnectionReuseStrategyHC4.INSTANCE;
+                    reuseStrategy = DefaultConnectionReuseStrategy.INSTANCE;
                 } else {
-                    reuseStrategy = NoConnectionReuseStrategyHC4.INSTANCE;
+                    reuseStrategy = NoConnectionReuseStrategy.INSTANCE;
                 }
             } else {
-                reuseStrategy = DefaultConnectionReuseStrategyHC4.INSTANCE;
+                reuseStrategy = DefaultConnectionReuseStrategy.INSTANCE;
             }
         }
         ConnectionKeepAliveStrategy keepAliveStrategy = this.keepAliveStrategy;
@@ -823,10 +821,10 @@ public class HttpClientBuilder {
             }
             b.addAll(
                     new RequestDefaultHeadersHC4(defaultHeaders),
-                    new RequestContentHC4(),
-                    new RequestTargetHostHC4(),
+                    new RequestContent(),
+                    new RequestTargetHost(),
                     new RequestClientConnControl(),
-                    new RequestUserAgentHC4(userAgent),
+                    new RequestUserAgent(userAgent),
                     new RequestExpectContinue());
             if (!cookieManagementDisabled) {
                 b.add(new RequestAddCookiesHC4());

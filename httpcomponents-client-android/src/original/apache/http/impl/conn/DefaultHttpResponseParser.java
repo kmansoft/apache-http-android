@@ -29,10 +29,6 @@ package original.apache.http.impl.conn;
 
 import java.io.IOException;
 
-import android.util.Log;
-
-import original.apache.http.params.HttpParams;
-
 import original.apache.http.HttpException;
 import original.apache.http.HttpResponse;
 import original.apache.http.HttpResponseFactory;
@@ -41,13 +37,15 @@ import original.apache.http.ProtocolException;
 import original.apache.http.StatusLine;
 import original.apache.http.annotation.NotThreadSafe;
 import original.apache.http.config.MessageConstraints;
-import original.apache.http.impl.DefaultHttpResponseFactoryHC4;
-import original.apache.http.impl.io.AbstractMessageParserHC4;
+import original.apache.http.impl.DefaultHttpResponseFactory;
+import original.apache.http.impl.io.AbstractMessageParser;
 import original.apache.http.io.SessionInputBuffer;
 import original.apache.http.message.LineParser;
 import original.apache.http.message.ParserCursor;
+import original.apache.http.params.HttpParams;
 import original.apache.http.util.Args;
 import original.apache.http.util.CharArrayBuffer;
+import android.util.Log;
 
 /**
  * Lenient HTTP response parser implementation that can skip malformed data until
@@ -57,7 +55,7 @@ import original.apache.http.util.CharArrayBuffer;
  */
 @SuppressWarnings("deprecation")
 @NotThreadSafe
-public class DefaultHttpResponseParser extends AbstractMessageParserHC4<HttpResponse> {
+public class DefaultHttpResponseParser extends AbstractMessageParser<HttpResponse> {
 
     private final static String TAG = "HttpClient";
 
@@ -100,7 +98,7 @@ public class DefaultHttpResponseParser extends AbstractMessageParserHC4<HttpResp
             final MessageConstraints constraints) {
         super(buffer, lineParser, constraints);
         this.responseFactory = responseFactory != null ? responseFactory :
-                DefaultHttpResponseFactoryHC4.INSTANCE;
+                DefaultHttpResponseFactory.INSTANCE;
         this.lineBuf = new CharArrayBuffer(128);
     }
 

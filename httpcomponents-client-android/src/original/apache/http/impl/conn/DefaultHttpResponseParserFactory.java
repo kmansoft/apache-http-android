@@ -31,7 +31,7 @@ import original.apache.http.HttpResponse;
 import original.apache.http.HttpResponseFactory;
 import original.apache.http.annotation.Immutable;
 import original.apache.http.config.MessageConstraints;
-import original.apache.http.impl.DefaultHttpResponseFactoryHC4;
+import original.apache.http.impl.DefaultHttpResponseFactory;
 import original.apache.http.io.HttpMessageParser;
 import original.apache.http.io.HttpMessageParserFactory;
 import original.apache.http.io.SessionInputBuffer;
@@ -57,7 +57,7 @@ public class DefaultHttpResponseParserFactory implements HttpMessageParserFactor
         super();
         this.lineParser = lineParser != null ? lineParser : BasicLineParserHC4.INSTANCE;
         this.responseFactory = responseFactory != null ? responseFactory
-                : DefaultHttpResponseFactoryHC4.INSTANCE;
+                : DefaultHttpResponseFactory.INSTANCE;
     }
 
     public DefaultHttpResponseParserFactory(

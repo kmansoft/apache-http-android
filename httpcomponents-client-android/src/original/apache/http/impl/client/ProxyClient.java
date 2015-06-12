@@ -54,7 +54,7 @@ import original.apache.http.conn.routing.HttpRoute;
 import original.apache.http.conn.routing.RouteInfo.LayerType;
 import original.apache.http.conn.routing.RouteInfo.TunnelType;
 import original.apache.http.entity.BufferedHttpEntity;
-import original.apache.http.impl.DefaultConnectionReuseStrategyHC4;
+import original.apache.http.impl.DefaultConnectionReuseStrategy;
 import original.apache.http.impl.auth.BasicSchemeFactoryHC4;
 import original.apache.http.impl.auth.DigestSchemeFactoryHC4;
 import original.apache.http.impl.auth.HttpAuthenticator;
@@ -65,16 +65,16 @@ import original.apache.http.message.BasicHttpRequest;
 import original.apache.http.params.BasicHttpParams;
 import original.apache.http.params.HttpParamConfig;
 import original.apache.http.params.HttpParams;
-import original.apache.http.protocol.BasicHttpContextHC4;
+import original.apache.http.protocol.BasicHttpContext;
 import original.apache.http.protocol.HttpContext;
 import original.apache.http.protocol.HttpCoreContext;
 import original.apache.http.protocol.HttpProcessor;
 import original.apache.http.protocol.HttpRequestExecutor;
 import original.apache.http.protocol.ImmutableHttpProcessor;
-import original.apache.http.protocol.RequestTargetHostHC4;
-import original.apache.http.protocol.RequestUserAgentHC4;
+import original.apache.http.protocol.RequestTargetHost;
+import original.apache.http.protocol.RequestUserAgent;
 import original.apache.http.util.Args;
-import original.apache.http.util.EntityUtilsHC4;
+import original.apache.http.util.EntityUtils;
 
 /**
  * ProxyClient can be used to establish a tunnel via an HTTP proxy.
@@ -105,7 +105,7 @@ public class ProxyClient {
         this.connectionConfig = connectionConfig != null ? connectionConfig : ConnectionConfig.DEFAULT;
         this.requestConfig = requestConfig != null ? requestConfig : RequestConfig.DEFAULT;
         this.httpProcessor = new ImmutableHttpProcessor(
-                new RequestTargetHostHC4(), new RequestClientConnControl(), new RequestUserAgentHC4());
+                new RequestTargetHost(), new RequestClientConnControl(), new RequestUserAgent());
         this.requestExec = new HttpRequestExecutor();
         this.proxyAuthStrategy = new ProxyAuthenticationStrategy();
         this.authenticator = new HttpAuthenticator();
@@ -114,7 +114,7 @@ public class ProxyClient {
         this.authSchemeRegistry.register(AuthSchemes.BASIC, new BasicSchemeFactoryHC4());
         this.authSchemeRegistry.register(AuthSchemes.DIGEST, new DigestSchemeFactoryHC4());
         this.authSchemeRegistry.register(AuthSchemes.NTLM, new NTLMSchemeFactory());
-        this.reuseStrategy = new DefaultConnectionReuseStrategyHC4();
+        this.reuseStrategy = new DefaultConnectionReuseStrategy();
     }
 
     /**
@@ -172,7 +172,7 @@ public class ProxyClient {
 
         final ManagedHttpClientConnection conn = this.connFactory.create(
                 route, this.connectionConfig);
-        final HttpContext context = new BasicHttpContextHC4();
+        final HttpContext context = new BasicHttpContext();
         HttpResponse response;
 
         final HttpRequest connect = new BasicHttpRequest(
@@ -216,7 +216,7 @@ public class ProxyClient {
                     if (this.reuseStrategy.keepAlive(response, context)) {
                         // Consume response content
                         final HttpEntity entity = response.getEntity();
-                        EntityUtilsHC4.consume(entity);
+                        EntityUtils.consume(entity);
                     } else {
                         conn.close();
                     }

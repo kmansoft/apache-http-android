@@ -30,8 +30,6 @@ package original.apache.http.impl.client;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import original.apache.http.params.HttpParams;
-
 import original.apache.http.HttpException;
 import original.apache.http.HttpHost;
 import original.apache.http.HttpRequest;
@@ -49,9 +47,10 @@ import original.apache.http.conn.HttpClientConnectionManager;
 import original.apache.http.conn.ManagedClientConnection;
 import original.apache.http.conn.routing.HttpRoute;
 import original.apache.http.conn.scheme.SchemeRegistry;
-import original.apache.http.impl.DefaultConnectionReuseStrategyHC4;
+import original.apache.http.impl.DefaultConnectionReuseStrategy;
 import original.apache.http.impl.execchain.MinimalClientExec;
 import original.apache.http.params.BasicHttpParams;
+import original.apache.http.params.HttpParams;
 import original.apache.http.protocol.BasicHttpContextHC4;
 import original.apache.http.protocol.HttpContext;
 import original.apache.http.protocol.HttpRequestExecutor;
@@ -77,7 +76,7 @@ class MinimalHttpClient extends CloseableHttpClient {
         this.requestExecutor = new MinimalClientExec(
                 new HttpRequestExecutor(),
                 connManager,
-                DefaultConnectionReuseStrategyHC4.INSTANCE,
+                DefaultConnectionReuseStrategy.INSTANCE,
                 DefaultConnectionKeepAliveStrategyHC4.INSTANCE);
         this.params = new BasicHttpParams();
     }
