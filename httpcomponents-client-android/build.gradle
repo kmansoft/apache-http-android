@@ -49,6 +49,10 @@ ext.isRelease = !version.endsWith('-SNAPSHOT')
 
 ext.inceptionYear = '1999'
 
+dependencies {
+	compile project(':httpcomponents-core')
+}
+	
 android {
 
     compileSdkVersion 17

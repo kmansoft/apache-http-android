@@ -1,0 +1,125 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:1.1+'
+    }
+}
+
+apply plugin: 'android-library'
+apply plugin: 'maven'
+
+repositories {
+    mavenCentral()
+}
+
+group = 'org.apache.httpcomponents'
+version = HC_VER
+
+ext.isRelease = !version.endsWith('-SNAPSHOT')
+
+ext.inceptionYear = '1999'
+
+android {
+    compileSdkVersion 17
+    buildToolsVersion "19.1.0"
+
+    defaultConfig {
+        minSdkVersion 8
+        targetSdkVersion 8
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_5
+        targetCompatibility JavaVersion.VERSION_1_5
+    }
+
+	sourceSets {
+		main {
+			manifest.srcFile 'AndroidManifest.xml'
+			java.srcDirs = ['src']
+		}
+	}
+}
+
+configurations {
+    dist
+}
+
+ext.sharedManifest = manifest {
+    attributes (
+            'Specification-Title': "HttpComponents Core for Android",
+            'Specification-Version': "$version",
+            'Specification-Vendor': "The Apache Software Foundation",
+            'Implementation-Title': "HttpComponents Core for Android",
+            'Implementation-Version': "$version",
+            'Implementation-Vendor': "The Apache Software Foundation",
+            'Implementation-Vendor-Id': "org.apache",
+            'url': 'http://hc.apache.org/httpcomponents-core'
+    )
+}
+
+android.libraryVariants.all { variant ->
+    def name = variant.buildType.name
+    if (name == 'release') {
+
+        task createAndroidJar(type: Jar) {
+            dependsOn variant.javaCompile
+            from variant.javaCompile.destinationDir
+            from 'NOTICE.txt'
+            from 'LICENSE.txt'
+            rename '(NOTICE|LICENSE).txt', 'META-INF/$1'
+
+            manifest {
+                from sharedManifest
+            }
+        }
+
+        task createAndroidSrcJar(type: Jar) {
+            dependsOn variant.javaCompile
+            from variant.javaCompile.source
+            from 'NOTICE.txt'
+            from 'LICENSE.txt'
+            rename '(NOTICE|LICENSE).txt', 'META-INF/$1'
+            classifier = 'sources'
+
+            manifest {
+                from sharedManifest
+            }
+        }
+
+        task createAndroidJavadoc(type: Javadoc) {
+            dependsOn variant.javaCompile
+            source = variant.javaCompile.source
+            classpath = files(android.getBootClasspath(), variant.javaCompile.classpath.files)
+            title "Apache HttpClient for Android $HC_VER API"
+            configure (options) {
+                docTitle "Apache HttpClient for Android $HC_VER API"
+                bottom "Copyright &copy; ${inceptionYear}-${Calendar.instance.get(Calendar.YEAR)} " +
+                        "<a href=\"http://www.apache.org/\">The Apache Software Foundation</a>. " +
+                        "All rights reserved."
+            }
+        }
+
+        task createAndroidJavadocJar(type: Jar) {
+            dependsOn createAndroidJavadoc
+            from createAndroidJavadoc.destinationDir
+            from 'NOTICE.txt'
+            from 'LICENSE.txt'
+            rename '(NOTICE|LICENSE).txt', 'META-INF/$1'
+            classifier = 'javadoc'
+
+            manifest {
+                from sharedManifest
+            }
+        }
+
+        artifacts {
+            dist createAndroidJar
+            dist createAndroidSrcJar
+            dist createAndroidJavadocJar
+        }
+    }
+}
