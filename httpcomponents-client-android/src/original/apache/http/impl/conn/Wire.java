@@ -30,6 +30,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.kman.apache.http.logging.WireCallback;
+
 import android.util.Log;
 import original.apache.http.annotation.Immutable;
 import original.apache.http.util.Args;
@@ -45,6 +47,15 @@ public class Wire {
 
     private final static String TAG = "Wire";
     private final String id;
+    
+    /**
+     * kman - added logging callback
+     */
+    public static void setWireCallback(WireCallback callback) {
+    	gWireCallback = callback;	
+    }
+    
+    private static volatile WireCallback gWireCallback;
 
     /**
      * @since 4.3
@@ -55,6 +66,13 @@ public class Wire {
 
     private void wire(final String header, final InputStream instream)
       throws IOException {
+    	// kman
+    	final WireCallback callback = gWireCallback;
+    	if (callback != null && callback.onWireLogData(header, instream)) {
+    		// Done
+    		return;
+    	}
+    	
         final StringBuilder buffer = new StringBuilder();
         int ch;
         while ((ch = instream.read()) != -1) {
@@ -84,6 +102,11 @@ public class Wire {
 
 
     public boolean enabled() {
+    	// kman
+    	final WireCallback callback = gWireCallback;
+    	if (callback != null) {
+    		return callback.isWireLogEnabled();
+    	}
         return Log.isLoggable(TAG, Log.DEBUG);
     }
 
