@@ -40,7 +40,7 @@ import original.apache.http.HttpVersion;
 import original.apache.http.auth.AUTH;
 import original.apache.http.auth.AuthSchemeRegistry;
 import original.apache.http.auth.AuthScope;
-import original.apache.http.auth.AuthStateHC4;
+import original.apache.http.auth.AuthState;
 import original.apache.http.auth.Credentials;
 import original.apache.http.client.config.AuthSchemes;
 import original.apache.http.client.config.RequestConfig;
@@ -55,8 +55,8 @@ import original.apache.http.conn.routing.RouteInfo.LayerType;
 import original.apache.http.conn.routing.RouteInfo.TunnelType;
 import original.apache.http.entity.BufferedHttpEntity;
 import original.apache.http.impl.DefaultConnectionReuseStrategy;
-import original.apache.http.impl.auth.BasicSchemeFactoryHC4;
-import original.apache.http.impl.auth.DigestSchemeFactoryHC4;
+import original.apache.http.impl.auth.BasicSchemeFactory;
+import original.apache.http.impl.auth.DigestSchemeFactory;
 import original.apache.http.impl.auth.HttpAuthenticator;
 import original.apache.http.impl.auth.NTLMSchemeFactory;
 import original.apache.http.impl.conn.ManagedHttpClientConnectionFactory;
@@ -89,7 +89,7 @@ public class ProxyClient {
     private final HttpRequestExecutor requestExec;
     private final ProxyAuthenticationStrategy proxyAuthStrategy;
     private final HttpAuthenticator authenticator;
-    private final AuthStateHC4 proxyAuthState;
+    private final AuthState proxyAuthState;
     private final AuthSchemeRegistry authSchemeRegistry;
     private final ConnectionReuseStrategy reuseStrategy;
 
@@ -109,10 +109,10 @@ public class ProxyClient {
         this.requestExec = new HttpRequestExecutor();
         this.proxyAuthStrategy = new ProxyAuthenticationStrategy();
         this.authenticator = new HttpAuthenticator();
-        this.proxyAuthState = new AuthStateHC4();
+        this.proxyAuthState = new AuthState();
         this.authSchemeRegistry = new AuthSchemeRegistry();
-        this.authSchemeRegistry.register(AuthSchemes.BASIC, new BasicSchemeFactoryHC4());
-        this.authSchemeRegistry.register(AuthSchemes.DIGEST, new DigestSchemeFactoryHC4());
+        this.authSchemeRegistry.register(AuthSchemes.BASIC, new BasicSchemeFactory());
+        this.authSchemeRegistry.register(AuthSchemes.DIGEST, new DigestSchemeFactory());
         this.authSchemeRegistry.register(AuthSchemes.NTLM, new NTLMSchemeFactory());
         this.reuseStrategy = new DefaultConnectionReuseStrategy();
     }
@@ -178,7 +178,7 @@ public class ProxyClient {
         final HttpRequest connect = new BasicHttpRequest(
                 "CONNECT", host.toHostString(), HttpVersion.HTTP_1_1);
 
-        final BasicCredentialsProviderHC4 credsProvider = new BasicCredentialsProviderHC4();
+        final BasicCredentialsProvider credsProvider = new BasicCredentialsProvider();
         credsProvider.setCredentials(new AuthScope(proxy.getHostName(), proxy.getPort()), credentials);
 
         // Populate the execution context

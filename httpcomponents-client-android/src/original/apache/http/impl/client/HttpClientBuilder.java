@@ -57,13 +57,13 @@ import original.apache.http.client.config.AuthSchemes;
 import original.apache.http.client.config.CookieSpecs;
 import original.apache.http.client.config.RequestConfig;
 import original.apache.http.client.protocol.RequestAcceptEncoding;
-import original.apache.http.client.protocol.RequestAddCookiesHC4;
+import original.apache.http.client.protocol.RequestAddCookies;
 import original.apache.http.client.protocol.RequestAuthCache;
 import original.apache.http.client.protocol.RequestClientConnControl;
-import original.apache.http.client.protocol.RequestDefaultHeadersHC4;
+import original.apache.http.client.protocol.RequestDefaultHeaders;
 import original.apache.http.client.protocol.RequestExpectContinue;
 import original.apache.http.client.protocol.ResponseContentEncoding;
-import original.apache.http.client.protocol.ResponseProcessCookiesHC4;
+import original.apache.http.client.protocol.ResponseProcessCookies;
 import original.apache.http.config.ConnectionConfig;
 import original.apache.http.config.Lookup;
 import original.apache.http.config.RegistryBuilder;
@@ -80,20 +80,20 @@ import original.apache.http.conn.ssl.X509HostnameVerifier;
 import original.apache.http.cookie.CookieSpecProvider;
 import original.apache.http.impl.DefaultConnectionReuseStrategy;
 import original.apache.http.impl.NoConnectionReuseStrategy;
-import original.apache.http.impl.auth.BasicSchemeFactoryHC4;
-import original.apache.http.impl.auth.DigestSchemeFactoryHC4;
+import original.apache.http.impl.auth.BasicSchemeFactory;
+import original.apache.http.impl.auth.DigestSchemeFactory;
 import original.apache.http.impl.auth.NTLMSchemeFactory;
 import original.apache.http.impl.conn.DefaultProxyRoutePlanner;
 import original.apache.http.impl.conn.DefaultRoutePlanner;
 import original.apache.http.impl.conn.DefaultSchemePortResolver;
 import original.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import original.apache.http.impl.conn.SystemDefaultRoutePlanner;
-import original.apache.http.impl.cookie.BestMatchSpecFactoryHC4;
-import original.apache.http.impl.cookie.BrowserCompatSpecFactoryHC4;
+import original.apache.http.impl.cookie.BestMatchSpecFactory;
+import original.apache.http.impl.cookie.BrowserCompatSpecFactory;
 import original.apache.http.impl.cookie.IgnoreSpecFactory;
-import original.apache.http.impl.cookie.NetscapeDraftSpecFactoryHC4;
-import original.apache.http.impl.cookie.RFC2109SpecFactoryHC4;
-import original.apache.http.impl.cookie.RFC2965SpecFactoryHC4;
+import original.apache.http.impl.cookie.NetscapeDraftSpecFactory;
+import original.apache.http.impl.cookie.RFC2109SpecFactory;
+import original.apache.http.impl.cookie.RFC2965SpecFactory;
 import original.apache.http.impl.execchain.BackoffStrategyExec;
 import original.apache.http.impl.execchain.ClientExecChain;
 import original.apache.http.impl.execchain.MainClientExec;
@@ -766,7 +766,7 @@ public class HttpClientBuilder {
         }
         ConnectionKeepAliveStrategy keepAliveStrategy = this.keepAliveStrategy;
         if (keepAliveStrategy == null) {
-            keepAliveStrategy = DefaultConnectionKeepAliveStrategyHC4.INSTANCE;
+            keepAliveStrategy = DefaultConnectionKeepAliveStrategy.INSTANCE;
         }
         AuthenticationStrategy targetAuthStrategy = this.targetAuthStrategy;
         if (targetAuthStrategy == null) {
@@ -779,7 +779,7 @@ public class HttpClientBuilder {
         UserTokenHandler userTokenHandler = this.userTokenHandler;
         if (userTokenHandler == null) {
             if (!connectionStateDisabled) {
-                userTokenHandler = DefaultUserTokenHandlerHC4.INSTANCE;
+                userTokenHandler = DefaultUserTokenHandler.INSTANCE;
             } else {
                 userTokenHandler = NoopUserTokenHandler.INSTANCE;
             }
@@ -820,14 +820,14 @@ public class HttpClientBuilder {
                 }
             }
             b.addAll(
-                    new RequestDefaultHeadersHC4(defaultHeaders),
+                    new RequestDefaultHeaders(defaultHeaders),
                     new RequestContent(),
                     new RequestTargetHost(),
                     new RequestClientConnControl(),
                     new RequestUserAgent(userAgent),
                     new RequestExpectContinue());
             if (!cookieManagementDisabled) {
-                b.add(new RequestAddCookiesHC4());
+                b.add(new RequestAddCookies());
             }
             if (!contentCompressionDisabled) {
                 b.add(new RequestAcceptEncoding());
@@ -836,7 +836,7 @@ public class HttpClientBuilder {
                 b.add(new RequestAuthCache());
             }
             if (!cookieManagementDisabled) {
-                b.add(new ResponseProcessCookiesHC4());
+                b.add(new ResponseProcessCookies());
             }
             if (!contentCompressionDisabled) {
                 b.add(new ResponseContentEncoding());
@@ -861,7 +861,7 @@ public class HttpClientBuilder {
         if (!automaticRetriesDisabled) {
             HttpRequestRetryHandler retryHandler = this.retryHandler;
             if (retryHandler == null) {
-                retryHandler = DefaultHttpRequestRetryHandlerHC4.INSTANCE;
+                retryHandler = DefaultHttpRequestRetryHandler.INSTANCE;
             }
             execChain = new RetryExec(execChain, retryHandler);
         }
@@ -905,27 +905,27 @@ public class HttpClientBuilder {
         Lookup<AuthSchemeProvider> authSchemeRegistry = this.authSchemeRegistry;
         if (authSchemeRegistry == null) {
             authSchemeRegistry = RegistryBuilder.<AuthSchemeProvider>create()
-                .register(AuthSchemes.BASIC, new BasicSchemeFactoryHC4())
-                .register(AuthSchemes.DIGEST, new DigestSchemeFactoryHC4())
+                .register(AuthSchemes.BASIC, new BasicSchemeFactory())
+                .register(AuthSchemes.DIGEST, new DigestSchemeFactory())
                 .register(AuthSchemes.NTLM, new NTLMSchemeFactory())
                 .build();
         }
         Lookup<CookieSpecProvider> cookieSpecRegistry = this.cookieSpecRegistry;
         if (cookieSpecRegistry == null) {
             cookieSpecRegistry = RegistryBuilder.<CookieSpecProvider>create()
-                .register(CookieSpecs.BEST_MATCH, new BestMatchSpecFactoryHC4())
-                .register(CookieSpecs.STANDARD, new RFC2965SpecFactoryHC4())
-                .register(CookieSpecs.BROWSER_COMPATIBILITY, new BrowserCompatSpecFactoryHC4())
-                .register(CookieSpecs.NETSCAPE, new NetscapeDraftSpecFactoryHC4())
+                .register(CookieSpecs.BEST_MATCH, new BestMatchSpecFactory())
+                .register(CookieSpecs.STANDARD, new RFC2965SpecFactory())
+                .register(CookieSpecs.BROWSER_COMPATIBILITY, new BrowserCompatSpecFactory())
+                .register(CookieSpecs.NETSCAPE, new NetscapeDraftSpecFactory())
                 .register(CookieSpecs.IGNORE_COOKIES, new IgnoreSpecFactory())
-                .register("rfc2109", new RFC2109SpecFactoryHC4())
-                .register("rfc2965", new RFC2965SpecFactoryHC4())
+                .register("rfc2109", new RFC2109SpecFactory())
+                .register("rfc2965", new RFC2965SpecFactory())
                 .build();
         }
 
         CookieStore defaultCookieStore = this.cookieStore;
         if (defaultCookieStore == null) {
-            defaultCookieStore = new BasicCookieStoreHC4();
+            defaultCookieStore = new BasicCookieStore();
         }
 
         CredentialsProvider defaultCredentialsProvider = this.credentialsProvider;
@@ -933,7 +933,7 @@ public class HttpClientBuilder {
             if (systemProperties) {
                 defaultCredentialsProvider = new SystemDefaultCredentialsProvider();
             } else {
-                defaultCredentialsProvider = new BasicCredentialsProviderHC4();
+                defaultCredentialsProvider = new BasicCredentialsProvider();
             }
         }
 

@@ -69,14 +69,14 @@ public class SystemDefaultCredentialsProvider implements CredentialsProvider {
         return s != null ? s : key;
     }
 
-    private final BasicCredentialsProviderHC4 internal;
+    private final BasicCredentialsProvider internal;
 
     /**
      * Default constructor.
      */
     public SystemDefaultCredentialsProvider() {
         super();
-        this.internal = new BasicCredentialsProviderHC4();
+        this.internal = new BasicCredentialsProvider();
     }
 
     public void setCredentials(final AuthScope authscope, final Credentials credentials) {

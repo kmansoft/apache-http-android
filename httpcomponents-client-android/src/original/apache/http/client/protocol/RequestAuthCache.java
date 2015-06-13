@@ -38,7 +38,7 @@ import original.apache.http.annotation.Immutable;
 import original.apache.http.auth.AuthProtocolState;
 import original.apache.http.auth.AuthScheme;
 import original.apache.http.auth.AuthScope;
-import original.apache.http.auth.AuthStateHC4;
+import original.apache.http.auth.AuthState;
 import original.apache.http.auth.Credentials;
 import original.apache.http.client.AuthCache;
 import original.apache.http.client.CredentialsProvider;
@@ -108,7 +108,7 @@ public class RequestAuthCache implements HttpRequestInterceptor {
                     target.getSchemeName());
         }
 
-        final AuthStateHC4 targetState = clientContext.getTargetAuthState();
+        final AuthState targetState = clientContext.getTargetAuthState();
         if (targetState != null && targetState.getState() == AuthProtocolState.UNCHALLENGED) {
             final AuthScheme authScheme = authCache.get(target);
             if (authScheme != null) {
@@ -117,7 +117,7 @@ public class RequestAuthCache implements HttpRequestInterceptor {
         }
 
         final HttpHost proxy = route.getProxyHost();
-        final AuthStateHC4 proxyState = clientContext.getProxyAuthState();
+        final AuthState proxyState = clientContext.getProxyAuthState();
         if (proxy != null && proxyState != null && proxyState.getState() == AuthProtocolState.UNCHALLENGED) {
             final AuthScheme authScheme = authCache.get(proxy);
             if (authScheme != null) {
@@ -129,7 +129,7 @@ public class RequestAuthCache implements HttpRequestInterceptor {
     private void doPreemptiveAuth(
             final HttpHost host,
             final AuthScheme authScheme,
-            final AuthStateHC4 authState,
+            final AuthState authState,
             final CredentialsProvider credsProvider) {
         final String schemeName = authScheme.getSchemeName();
         if (Log.isLoggable(TAG, Log.DEBUG)) {

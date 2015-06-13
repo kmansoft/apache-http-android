@@ -132,13 +132,13 @@ public class SSLConnectionSocketFactory implements LayeredConnectionSocketFactor
     public static final String SSLV2 = "SSLv2";
 
     public static final X509HostnameVerifier ALLOW_ALL_HOSTNAME_VERIFIER
-        = new AllowAllHostnameVerifierHC4();
+        = new AllowAllHostnameVerifier();
 
     public static final X509HostnameVerifier BROWSER_COMPATIBLE_HOSTNAME_VERIFIER
-        = new BrowserCompatHostnameVerifierHC4();
+        = new BrowserCompatHostnameVerifier();
 
     public static final X509HostnameVerifier STRICT_HOSTNAME_VERIFIER
-        = new StrictHostnameVerifierHC4();
+        = new StrictHostnameVerifier();
 
     /**
      * Obtains default SSL socket factory with an SSL context based on the standard JSSE

@@ -41,7 +41,7 @@ import original.apache.http.HttpHost;
 import original.apache.http.HttpRequest;
 import original.apache.http.annotation.ThreadSafe;
 import original.apache.http.auth.AuthSchemeProvider;
-import original.apache.http.auth.AuthStateHC4;
+import original.apache.http.auth.AuthState;
 import original.apache.http.client.ClientProtocolException;
 import original.apache.http.client.CookieStore;
 import original.apache.http.client.CredentialsProvider;
@@ -127,10 +127,10 @@ class InternalHttpClient extends CloseableHttpClient {
 
     private void setupContext(final HttpClientContext context) {
         if (context.getAttribute(HttpClientContext.TARGET_AUTH_STATE) == null) {
-            context.setAttribute(HttpClientContext.TARGET_AUTH_STATE, new AuthStateHC4());
+            context.setAttribute(HttpClientContext.TARGET_AUTH_STATE, new AuthState());
         }
         if (context.getAttribute(HttpClientContext.PROXY_AUTH_STATE) == null) {
-            context.setAttribute(HttpClientContext.PROXY_AUTH_STATE, new AuthStateHC4());
+            context.setAttribute(HttpClientContext.PROXY_AUTH_STATE, new AuthState());
         }
         if (context.getAttribute(HttpClientContext.AUTHSCHEME_REGISTRY) == null) {
             context.setAttribute(HttpClientContext.AUTHSCHEME_REGISTRY, this.authSchemeRegistry);

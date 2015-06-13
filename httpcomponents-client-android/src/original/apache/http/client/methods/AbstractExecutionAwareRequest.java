@@ -31,7 +31,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import original.apache.http.HttpRequest;
-import original.apache.http.client.utils.CloneUtilsHC4;
+import original.apache.http.client.utils.CloneUtils;
 import original.apache.http.concurrent.Cancellable;
 import original.apache.http.conn.ClientConnectionRequest;
 import original.apache.http.conn.ConnectionReleaseTrigger;
@@ -103,8 +103,8 @@ public abstract class AbstractExecutionAwareRequest extends AbstractHttpMessage 
     @Override
     public Object clone() throws CloneNotSupportedException {
         final AbstractExecutionAwareRequest clone = (AbstractExecutionAwareRequest) super.clone();
-        clone.headergroup = CloneUtilsHC4.cloneObject(this.headergroup);
-        clone.params = CloneUtilsHC4.cloneObject(this.params);
+        clone.headergroup = CloneUtils.cloneObject(this.headergroup);
+        clone.params = CloneUtils.cloneObject(this.params);
         return clone;
     }
 

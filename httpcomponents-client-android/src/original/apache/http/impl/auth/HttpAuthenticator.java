@@ -41,7 +41,7 @@ import original.apache.http.HttpResponse;
 import original.apache.http.auth.AuthOption;
 import original.apache.http.auth.AuthProtocolState;
 import original.apache.http.auth.AuthScheme;
-import original.apache.http.auth.AuthStateHC4;
+import original.apache.http.auth.AuthState;
 import original.apache.http.auth.AuthenticationException;
 import original.apache.http.auth.ContextAwareAuthScheme;
 import original.apache.http.auth.Credentials;
@@ -65,7 +65,7 @@ public class HttpAuthenticator {
             final HttpHost host,
             final HttpResponse response,
             final AuthenticationStrategy authStrategy,
-            final AuthStateHC4 authState,
+            final AuthState authState,
             final HttpContext context) {
         if (authStrategy.isAuthenticationRequested(host, response, context)) {
             if (Log.isLoggable(TAG, Log.DEBUG)) {
@@ -98,7 +98,7 @@ public class HttpAuthenticator {
             final HttpHost host,
             final HttpResponse response,
             final AuthenticationStrategy authStrategy,
-            final AuthStateHC4 authState,
+            final AuthState authState,
             final HttpContext context) {
         try {
             if (Log.isLoggable(TAG, Log.DEBUG)) {
@@ -179,7 +179,7 @@ public class HttpAuthenticator {
 
     public void generateAuthResponse(
             final HttpRequest request,
-            final AuthStateHC4 authState,
+            final AuthState authState,
             final HttpContext context) throws HttpException, IOException {
         AuthScheme authScheme = authState.getAuthScheme();
         Credentials creds = authState.getCredentials();

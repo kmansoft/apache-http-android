@@ -49,7 +49,7 @@ class LoggingManagedHttpClientConnection extends DefaultManagedHttpClientConnect
 
     private final static String TAG = "HttpClient";
     private final static String HEADER_TAG = "Headers";
-    private final WireHC4 wire;
+    private final Wire wire;
 
     public LoggingManagedHttpClientConnection(
             final String id,
@@ -65,7 +65,7 @@ class LoggingManagedHttpClientConnection extends DefaultManagedHttpClientConnect
         super(id, buffersize, fragmentSizeHint, chardecoder, charencoder,
                 constraints, incomingContentStrategy, outgoingContentStrategy,
                 requestWriterFactory, responseParserFactory);
-        this.wire = new WireHC4(id);
+        this.wire = new Wire(id);
     }
 
     @Override

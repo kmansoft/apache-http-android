@@ -28,9 +28,9 @@
 package original.apache.http.impl.client;
 
 import original.apache.http.annotation.Immutable;
-import original.apache.http.client.methods.HttpGetHC4;
-import original.apache.http.client.methods.HttpHeadHC4;
-import original.apache.http.client.methods.HttpPostHC4;
+import original.apache.http.client.methods.HttpGet;
+import original.apache.http.client.methods.HttpHead;
+import original.apache.http.client.methods.HttpPost;
 
 /**
  * Lax {@link original.apache.http.client.RedirectStrategy} implementation
@@ -47,9 +47,9 @@ public class LaxRedirectStrategy extends DefaultRedirectStrategy {
      * Redirectable methods.
      */
     private static final String[] REDIRECT_METHODS = new String[] {
-        HttpGetHC4.METHOD_NAME,
-        HttpPostHC4.METHOD_NAME,
-        HttpHeadHC4.METHOD_NAME
+        HttpGet.METHOD_NAME,
+        HttpPost.METHOD_NAME,
+        HttpHead.METHOD_NAME
     };
 
     @Override

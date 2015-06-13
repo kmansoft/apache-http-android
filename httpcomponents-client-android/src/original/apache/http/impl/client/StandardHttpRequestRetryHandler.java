@@ -45,7 +45,7 @@ import original.apache.http.annotation.Immutable;
  * @since 4.2
  */
 @Immutable
-public class StandardHttpRequestRetryHandler extends DefaultHttpRequestRetryHandlerHC4 {
+public class StandardHttpRequestRetryHandler extends DefaultHttpRequestRetryHandler {
 
     private final Map<String, Boolean> idempotentMethods;
 

@@ -50,7 +50,7 @@ import original.apache.http.client.methods.HttpRequestWrapper;
 import original.apache.http.client.methods.HttpUriRequest;
 import original.apache.http.client.protocol.HttpClientContext;
 import original.apache.http.client.protocol.RequestClientConnControl;
-import original.apache.http.client.utils.URIUtilsHC4;
+import original.apache.http.client.utils.URIUtils;
 import original.apache.http.conn.ConnectionKeepAliveStrategy;
 import original.apache.http.conn.ConnectionRequest;
 import original.apache.http.conn.HttpClientConnectionManager;
@@ -113,9 +113,9 @@ public class MinimalClientExec implements ClientExecChain {
             if (uri != null) {
                 // Make sure the request URI is relative
                 if (uri.isAbsolute()) {
-                    uri = URIUtilsHC4.rewriteURI(uri, null, true);
+                    uri = URIUtils.rewriteURI(uri, null, true);
                 } else {
-                    uri = URIUtilsHC4.rewriteURI(uri);
+                    uri = URIUtils.rewriteURI(uri);
                 }
                 request.setURI(uri);
             }

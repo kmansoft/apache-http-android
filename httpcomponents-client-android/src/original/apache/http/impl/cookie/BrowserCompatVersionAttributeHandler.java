@@ -39,7 +39,7 @@ import original.apache.http.util.Args;
  */
 @Immutable
 public class BrowserCompatVersionAttributeHandler extends
-        AbstractCookieAttributeHandlerHC4 {
+        AbstractCookieAttributeHandler {
 
     public BrowserCompatVersionAttributeHandler() {
         super();

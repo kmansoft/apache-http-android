@@ -42,7 +42,7 @@ import original.apache.http.cookie.MalformedCookieException;
  * @since 4.1
  */
 @NotThreadSafe // superclass is @NotThreadSafe
-public class IgnoreSpec extends CookieSpecBaseHC4 {
+public class IgnoreSpec extends CookieSpecBase {
 
     public int getVersion() {
         return 0;

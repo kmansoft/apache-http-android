@@ -41,9 +41,9 @@ import java.io.OutputStream;
 class LoggingOutputStream extends OutputStream {
 
     private final OutputStream out;
-    private final WireHC4 wire;
+    private final Wire wire;
 
-    public LoggingOutputStream(final OutputStream out, final WireHC4 wire) {
+    public LoggingOutputStream(final OutputStream out, final Wire wire) {
         super();
         this.out = out;
         this.wire = wire;

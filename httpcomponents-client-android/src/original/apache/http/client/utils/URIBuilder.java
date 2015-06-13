@@ -36,7 +36,7 @@ import java.util.List;
 import original.apache.http.Consts;
 import original.apache.http.NameValuePair;
 import original.apache.http.annotation.NotThreadSafe;
-import original.apache.http.conn.util.InetAddressUtilsHC4;
+import original.apache.http.conn.util.InetAddressUtils;
 import original.apache.http.message.BasicNameValuePair;
 
 /**
@@ -92,7 +92,7 @@ public class URIBuilder {
 
     private List <NameValuePair> parseQuery(final String query, final Charset charset) {
         if (query != null && query.length() > 0) {
-            return URLEncodedUtilsHC4.parse(query, charset);
+            return URLEncodedUtils.parse(query, charset);
         }
         return null;
     }
@@ -121,7 +121,7 @@ public class URIBuilder {
                 } else if (this.userInfo != null) {
                     sb.append(encodeUserInfo(this.userInfo)).append("@");
                 }
-                if (InetAddressUtilsHC4.isIPv6Address(this.host)) {
+                if (InetAddressUtils.isIPv6Address(this.host)) {
                     sb.append("[").append(this.host).append("]");
                 } else {
                     sb.append(this.host);
@@ -168,19 +168,19 @@ public class URIBuilder {
     }
 
     private String encodeUserInfo(final String userInfo) {
-        return URLEncodedUtilsHC4.encUserInfo(userInfo, Consts.UTF_8);
+        return URLEncodedUtils.encUserInfo(userInfo, Consts.UTF_8);
     }
 
     private String encodePath(final String path) {
-        return URLEncodedUtilsHC4.encPath(path, Consts.UTF_8);
+        return URLEncodedUtils.encPath(path, Consts.UTF_8);
     }
 
     private String encodeUrlForm(final List<NameValuePair> params) {
-        return URLEncodedUtilsHC4.format(params, Consts.UTF_8);
+        return URLEncodedUtils.format(params, Consts.UTF_8);
     }
 
     private String encodeUric(final String fragment) {
-        return URLEncodedUtilsHC4.encUric(fragment, Consts.UTF_8);
+        return URLEncodedUtils.encUric(fragment, Consts.UTF_8);
     }
 
     /**
@@ -259,7 +259,7 @@ public class URIBuilder {
      *
      * @deprecated (4.3) use {@link #setParameters(List)} or {@link #setParameters(NameValuePair...)}
      *
-     * @see URLEncodedUtilsHC4#parse
+     * @see URLEncodedUtils#parse
      */
     @Deprecated
     public URIBuilder setQuery(final String query) {

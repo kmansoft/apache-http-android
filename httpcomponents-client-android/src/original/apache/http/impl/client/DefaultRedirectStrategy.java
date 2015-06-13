@@ -42,13 +42,13 @@ import original.apache.http.annotation.Immutable;
 import original.apache.http.client.CircularRedirectException;
 import original.apache.http.client.RedirectStrategy;
 import original.apache.http.client.config.RequestConfig;
-import original.apache.http.client.methods.HttpGetHC4;
-import original.apache.http.client.methods.HttpHeadHC4;
+import original.apache.http.client.methods.HttpGet;
+import original.apache.http.client.methods.HttpHead;
 import original.apache.http.client.methods.HttpUriRequest;
 import original.apache.http.client.methods.RequestBuilder;
 import original.apache.http.client.protocol.HttpClientContext;
 import original.apache.http.client.utils.URIBuilder;
-import original.apache.http.client.utils.URIUtilsHC4;
+import original.apache.http.client.utils.URIUtils;
 import original.apache.http.protocol.HttpContext;
 import original.apache.http.util.Args;
 import original.apache.http.util.Asserts;
@@ -85,8 +85,8 @@ public class DefaultRedirectStrategy implements RedirectStrategy {
      * Redirectable methods.
      */
     private static final String[] REDIRECT_METHODS = new String[] {
-        HttpGetHC4.METHOD_NAME,
-        HttpHeadHC4.METHOD_NAME
+        HttpGet.METHOD_NAME,
+        HttpHead.METHOD_NAME
     };
 
     public DefaultRedirectStrategy() {
@@ -155,17 +155,17 @@ public class DefaultRedirectStrategy implements RedirectStrategy {
                 final HttpHost target = clientContext.getTargetHost();
                 Asserts.notNull(target, "Target host");
                 final URI requestURI = new URI(request.getRequestLine().getUri());
-                final URI absoluteRequestURI = URIUtilsHC4.rewriteURI(requestURI, target, false);
-                uri = URIUtilsHC4.resolve(absoluteRequestURI, uri);
+                final URI absoluteRequestURI = URIUtils.rewriteURI(requestURI, target, false);
+                uri = URIUtils.resolve(absoluteRequestURI, uri);
             }
         } catch (final URISyntaxException ex) {
             throw new ProtocolException(ex.getMessage(), ex);
         }
 
-        RedirectLocationsHC4 redirectLocations = (RedirectLocationsHC4) clientContext.getAttribute(
+        RedirectLocations redirectLocations = (RedirectLocations) clientContext.getAttribute(
                 HttpClientContext.REDIRECT_LOCATIONS);
         if (redirectLocations == null) {
-            redirectLocations = new RedirectLocationsHC4();
+            redirectLocations = new RedirectLocations();
             context.setAttribute(HttpClientContext.REDIRECT_LOCATIONS, redirectLocations);
         }
         if (!config.isCircularRedirectsAllowed()) {
@@ -215,16 +215,16 @@ public class DefaultRedirectStrategy implements RedirectStrategy {
             final HttpContext context) throws ProtocolException {
         final URI uri = getLocationURI(request, response, context);
         final String method = request.getRequestLine().getMethod();
-        if (method.equalsIgnoreCase(HttpHeadHC4.METHOD_NAME)) {
-            return new HttpHeadHC4(uri);
-        } else if (method.equalsIgnoreCase(HttpGetHC4.METHOD_NAME)) {
-            return new HttpGetHC4(uri);
+        if (method.equalsIgnoreCase(HttpHead.METHOD_NAME)) {
+            return new HttpHead(uri);
+        } else if (method.equalsIgnoreCase(HttpGet.METHOD_NAME)) {
+            return new HttpGet(uri);
         } else {
             final int status = response.getStatusLine().getStatusCode();
             if (status == HttpStatus.SC_TEMPORARY_REDIRECT) {
                 return RequestBuilder.copy(request).setUri(uri).build();
             } else {
-                return new HttpGetHC4(uri);
+                return new HttpGet(uri);
             }
         }
     }

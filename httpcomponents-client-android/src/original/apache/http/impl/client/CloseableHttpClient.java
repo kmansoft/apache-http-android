@@ -43,7 +43,7 @@ import original.apache.http.client.HttpClient;
 import original.apache.http.client.ResponseHandler;
 import original.apache.http.client.methods.CloseableHttpResponse;
 import original.apache.http.client.methods.HttpUriRequest;
-import original.apache.http.client.utils.URIUtilsHC4;
+import original.apache.http.client.utils.URIUtils;
 import original.apache.http.protocol.HttpContext;
 import original.apache.http.util.Args;
 import original.apache.http.util.EntityUtils;
@@ -88,7 +88,7 @@ public abstract class CloseableHttpClient implements HttpClient, Closeable {
 
         final URI requestURI = request.getURI();
         if (requestURI.isAbsolute()) {
-            target = URIUtilsHC4.extractHost(requestURI);
+            target = URIUtils.extractHost(requestURI);
             if (target == null) {
                 throw new ClientProtocolException("URI does not specify a valid host name: "
                         + requestURI);

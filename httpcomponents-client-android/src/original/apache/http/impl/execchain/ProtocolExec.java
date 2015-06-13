@@ -49,9 +49,9 @@ import original.apache.http.client.methods.HttpRequestWrapper;
 import original.apache.http.client.methods.HttpUriRequest;
 import original.apache.http.client.params.ClientPNames;
 import original.apache.http.client.protocol.HttpClientContext;
-import original.apache.http.client.utils.URIUtilsHC4;
+import original.apache.http.client.utils.URIUtils;
 import original.apache.http.conn.routing.HttpRoute;
-import original.apache.http.impl.client.BasicCredentialsProviderHC4;
+import original.apache.http.impl.client.BasicCredentialsProvider;
 import original.apache.http.protocol.HttpCoreContext;
 import original.apache.http.protocol.HttpProcessor;
 import original.apache.http.util.Args;
@@ -95,16 +95,16 @@ public class ProtocolExec implements ClientExecChain {
                     // Make sure the request URI is absolute
                     if (!uri.isAbsolute()) {
                         final HttpHost target = route.getTargetHost();
-                        uri = URIUtilsHC4.rewriteURI(uri, target, true);
+                        uri = URIUtils.rewriteURI(uri, target, true);
                     } else {
-                        uri = URIUtilsHC4.rewriteURI(uri);
+                        uri = URIUtils.rewriteURI(uri);
                     }
                 } else {
                     // Make sure the request URI is relative
                     if (uri.isAbsolute()) {
-                        uri = URIUtilsHC4.rewriteURI(uri, null, true);
+                        uri = URIUtils.rewriteURI(uri, null, true);
                     } else {
-                        uri = URIUtilsHC4.rewriteURI(uri);
+                        uri = URIUtils.rewriteURI(uri);
                     }
                 }
                 request.setURI(uri);
@@ -177,7 +177,7 @@ public class ProtocolExec implements ClientExecChain {
             if (userinfo != null) {
                 CredentialsProvider credsProvider = context.getCredentialsProvider();
                 if (credsProvider == null) {
-                    credsProvider = new BasicCredentialsProviderHC4();
+                    credsProvider = new BasicCredentialsProvider();
                     context.setCredentialsProvider(credsProvider);
                 }
                 credsProvider.setCredentials(

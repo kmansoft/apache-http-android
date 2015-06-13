@@ -77,7 +77,7 @@ class MinimalHttpClient extends CloseableHttpClient {
                 new HttpRequestExecutor(),
                 connManager,
                 DefaultConnectionReuseStrategy.INSTANCE,
-                DefaultConnectionKeepAliveStrategyHC4.INSTANCE);
+                DefaultConnectionKeepAliveStrategy.INSTANCE);
         this.params = new BasicHttpParams();
     }
 

@@ -32,7 +32,7 @@ import java.util.List;
 
 import original.apache.http.annotation.NotThreadSafe;
 import original.apache.http.auth.AuthSchemeProvider;
-import original.apache.http.auth.AuthStateHC4;
+import original.apache.http.auth.AuthState;
 import original.apache.http.client.AuthCache;
 import original.apache.http.client.CookieStore;
 import original.apache.http.client.CredentialsProvider;
@@ -217,12 +217,12 @@ public class HttpClientContext extends HttpCoreContext {
         setAttribute(AUTH_CACHE, authCache);
     }
 
-    public AuthStateHC4 getTargetAuthState() {
-        return getAttribute(TARGET_AUTH_STATE, AuthStateHC4.class);
+    public AuthState getTargetAuthState() {
+        return getAttribute(TARGET_AUTH_STATE, AuthState.class);
     }
 
-    public AuthStateHC4 getProxyAuthState() {
-        return getAttribute(PROXY_AUTH_STATE, AuthStateHC4.class);
+    public AuthState getProxyAuthState() {
+        return getAttribute(PROXY_AUTH_STATE, AuthState.class);
     }
 
     public <T> T getUserToken(final Class<T> clazz) {

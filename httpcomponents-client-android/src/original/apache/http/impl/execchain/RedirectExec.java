@@ -39,7 +39,7 @@ import original.apache.http.HttpRequest;
 import original.apache.http.ProtocolException;
 import original.apache.http.annotation.ThreadSafe;
 import original.apache.http.auth.AuthScheme;
-import original.apache.http.auth.AuthStateHC4;
+import original.apache.http.auth.AuthState;
 import original.apache.http.client.RedirectException;
 import original.apache.http.client.RedirectStrategy;
 import original.apache.http.client.config.RequestConfig;
@@ -47,7 +47,7 @@ import original.apache.http.client.methods.CloseableHttpResponse;
 import original.apache.http.client.methods.HttpExecutionAware;
 import original.apache.http.client.methods.HttpRequestWrapper;
 import original.apache.http.client.protocol.HttpClientContext;
-import original.apache.http.client.utils.URIUtilsHC4;
+import original.apache.http.client.utils.URIUtils;
 import original.apache.http.conn.routing.HttpRoute;
 import original.apache.http.conn.routing.HttpRoutePlanner;
 import original.apache.http.util.Args;
@@ -128,7 +128,7 @@ public class RedirectExec implements ClientExecChain {
                     }
 
                     final URI uri = currentRequest.getURI();
-                    final HttpHost newTarget = URIUtilsHC4.extractHost(uri);
+                    final HttpHost newTarget = URIUtils.extractHost(uri);
                     if (newTarget == null) {
                         throw new ProtocolException("Redirect URI does not specify a valid host name: " +
                                 uri);
@@ -136,14 +136,14 @@ public class RedirectExec implements ClientExecChain {
 
                     // Reset virtual host and auth states if redirecting to another host
                     if (!currentRoute.getTargetHost().equals(newTarget)) {
-                        final AuthStateHC4 targetAuthState = context.getTargetAuthState();
+                        final AuthState targetAuthState = context.getTargetAuthState();
                         if (targetAuthState != null) {
                             if (Log.isLoggable(TAG, Log.DEBUG)) {
                                 Log.d(TAG, "Resetting target auth state");
                             }
                             targetAuthState.reset();
                         }
-                        final AuthStateHC4 proxyAuthState = context.getProxyAuthState();
+                        final AuthState proxyAuthState = context.getProxyAuthState();
                         if (proxyAuthState != null) {
                             final AuthScheme authScheme = proxyAuthState.getAuthScheme();
                             if (authScheme != null && authScheme.isConnectionBased()) {

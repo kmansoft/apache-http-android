@@ -43,7 +43,7 @@ import original.apache.http.HttpResponse;
 import original.apache.http.annotation.Immutable;
 import original.apache.http.auth.AUTH;
 import original.apache.http.auth.AuthProtocolState;
-import original.apache.http.auth.AuthStateHC4;
+import original.apache.http.auth.AuthState;
 import original.apache.http.client.AuthenticationStrategy;
 import original.apache.http.client.NonRepeatableRequestException;
 import original.apache.http.client.UserTokenHandler;
@@ -137,14 +137,14 @@ public class MainClientExec implements ClientExecChain {
         Args.notNull(request, "HTTP request");
         Args.notNull(context, "HTTP context");
 
-        AuthStateHC4 targetAuthState = context.getTargetAuthState();
+        AuthState targetAuthState = context.getTargetAuthState();
         if (targetAuthState == null) {
-            targetAuthState = new AuthStateHC4();
+            targetAuthState = new AuthState();
             context.setAttribute(HttpClientContext.TARGET_AUTH_STATE, targetAuthState);
         }
-        AuthStateHC4 proxyAuthState = context.getProxyAuthState();
+        AuthState proxyAuthState = context.getProxyAuthState();
         if (proxyAuthState == null) {
-            proxyAuthState = new AuthStateHC4();
+            proxyAuthState = new AuthState();
             context.setAttribute(HttpClientContext.PROXY_AUTH_STATE, proxyAuthState);
         }
 
@@ -353,7 +353,7 @@ public class MainClientExec implements ClientExecChain {
      * Establishes the target route.
      */
     void establishRoute(
-            final AuthStateHC4 proxyAuthState,
+            final AuthState proxyAuthState,
             final HttpClientConnection managedConn,
             final HttpRoute route,
             final HttpRequest request,
@@ -435,7 +435,7 @@ public class MainClientExec implements ClientExecChain {
      * information about the tunnel, that is left to the caller.
      */
     private boolean createTunnelToTarget(
-            final AuthStateHC4 proxyAuthState,
+            final AuthState proxyAuthState,
             final HttpClientConnection managedConn,
             final HttpRoute route,
             final HttpRequest request,
@@ -540,8 +540,8 @@ public class MainClientExec implements ClientExecChain {
     }
 
     private boolean needAuthentication(
-            final AuthStateHC4 targetAuthState,
-            final AuthStateHC4 proxyAuthState,
+            final AuthState targetAuthState,
+            final AuthState proxyAuthState,
             final HttpRoute route,
             final HttpResponse response,
             final HttpClientContext context) {

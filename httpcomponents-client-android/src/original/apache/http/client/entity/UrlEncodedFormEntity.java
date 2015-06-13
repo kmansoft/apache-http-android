@@ -32,7 +32,7 @@ import java.util.List;
 
 import original.apache.http.NameValuePair;
 import original.apache.http.annotation.NotThreadSafe;
-import original.apache.http.client.utils.URLEncodedUtilsHC4;
+import original.apache.http.client.utils.URLEncodedUtils;
 import original.apache.http.entity.ContentType;
 import original.apache.http.entity.StringEntity;
 import original.apache.http.protocol.HTTP;
@@ -57,9 +57,9 @@ public class UrlEncodedFormEntity extends StringEntity {
     public UrlEncodedFormEntity (
         final List <? extends NameValuePair> parameters,
         final String charset) throws UnsupportedEncodingException {
-        super(URLEncodedUtilsHC4.format(parameters,
+        super(URLEncodedUtils.format(parameters,
                 charset != null ? charset : Charset.forName(HTTP.DEFAULT_CONTENT_CHARSET).name()),
-                ContentType.create(URLEncodedUtilsHC4.CONTENT_TYPE, charset));
+                ContentType.create(URLEncodedUtils.CONTENT_TYPE, charset));
     }
 
     /**
@@ -74,9 +74,9 @@ public class UrlEncodedFormEntity extends StringEntity {
     public UrlEncodedFormEntity (
         final Iterable <? extends NameValuePair> parameters,
         final Charset charset) {
-        super(URLEncodedUtilsHC4.format(parameters,
+        super(URLEncodedUtils.format(parameters,
                 charset != null ? charset : Charset.forName(HTTP.DEFAULT_CONTENT_CHARSET)),
-                ContentType.create(URLEncodedUtilsHC4.CONTENT_TYPE, charset));
+                ContentType.create(URLEncodedUtils.CONTENT_TYPE, charset));
     }
 
     /**

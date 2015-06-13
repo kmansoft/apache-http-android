@@ -49,7 +49,7 @@ import original.apache.http.annotation.NotThreadSafe;
  * @since 4.2
  */
 @NotThreadSafe
-public class HttpPatch extends HttpEntityEnclosingRequestBaseHC4 {
+public class HttpPatch extends HttpEntityEnclosingRequestBase {
 
     public final static String METHOD_NAME = "PATCH";
 

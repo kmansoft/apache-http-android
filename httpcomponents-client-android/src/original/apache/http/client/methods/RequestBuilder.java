@@ -88,31 +88,31 @@ public class RequestBuilder {
     }
 
     public static RequestBuilder get() {
-        return new RequestBuilder(HttpGetHC4.METHOD_NAME);
+        return new RequestBuilder(HttpGet.METHOD_NAME);
     }
 
     public static RequestBuilder head() {
-        return new RequestBuilder(HttpHeadHC4.METHOD_NAME);
+        return new RequestBuilder(HttpHead.METHOD_NAME);
     }
 
     public static RequestBuilder post() {
-        return new RequestBuilder(HttpPostHC4.METHOD_NAME);
+        return new RequestBuilder(HttpPost.METHOD_NAME);
     }
 
     public static RequestBuilder put() {
-        return new RequestBuilder(HttpPutHC4.METHOD_NAME);
+        return new RequestBuilder(HttpPut.METHOD_NAME);
     }
 
     public static RequestBuilder delete() {
-        return new RequestBuilder(HttpDeleteHC4.METHOD_NAME);
+        return new RequestBuilder(HttpDelete.METHOD_NAME);
     }
 
     public static RequestBuilder trace() {
-        return new RequestBuilder(HttpTraceHC4.METHOD_NAME);
+        return new RequestBuilder(HttpTrace.METHOD_NAME);
     }
 
     public static RequestBuilder options() {
-        return new RequestBuilder(HttpOptionsHC4.METHOD_NAME);
+        return new RequestBuilder(HttpOptions.METHOD_NAME);
     }
 
     public static RequestBuilder copy(final HttpRequest request) {
@@ -286,12 +286,12 @@ public class RequestBuilder {
     }
 
     public HttpUriRequest build() {
-        final HttpRequestBaseHC4 result;
+        final HttpRequestBase result;
         URI uri = this.uri != null ? this.uri : URI.create("/");
         HttpEntity entity = this.entity;
         if (parameters != null && !parameters.isEmpty()) {
-            if (entity == null && (HttpPostHC4.METHOD_NAME.equalsIgnoreCase(method)
-                    || HttpPutHC4.METHOD_NAME.equalsIgnoreCase(method))) {
+            if (entity == null && (HttpPost.METHOD_NAME.equalsIgnoreCase(method)
+                    || HttpPut.METHOD_NAME.equalsIgnoreCase(method))) {
                 entity = new UrlEncodedFormEntity(parameters, Charset.forName(HTTP.DEFAULT_CONTENT_CHARSET));
             } else {
                 try {
@@ -317,7 +317,7 @@ public class RequestBuilder {
         return result;
     }
 
-    static class InternalRequest extends HttpRequestBaseHC4 {
+    static class InternalRequest extends HttpRequestBase {
 
         private final String method;
 
@@ -333,7 +333,7 @@ public class RequestBuilder {
 
     }
 
-    static class InternalEntityEclosingRequest extends HttpEntityEnclosingRequestBaseHC4 {
+    static class InternalEntityEclosingRequest extends HttpEntityEnclosingRequestBase {
 
         private final String method;
 
