@@ -159,7 +159,7 @@ public class BasicScheme extends RFC2617Scheme {
         tmp.append(":");
         tmp.append((credentials.getPassword() == null) ? "null" : credentials.getPassword());
 
-        final byte[] base64password = Base64.decode(
+        final byte[] base64password = Base64.encode(
                 EncodingUtils.getBytes(tmp.toString(), getCredentialsCharset(request)),
                 Base64.NO_WRAP);
 
