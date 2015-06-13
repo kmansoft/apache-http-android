@@ -35,7 +35,7 @@ import java.net.SocketException;
 import original.apache.http.HttpEntity;
 import original.apache.http.HttpResponse;
 import original.apache.http.annotation.NotThreadSafe;
-import original.apache.http.conn.EofSensorInputStreamHC4;
+import original.apache.http.conn.EofSensorInputStream;
 import original.apache.http.conn.EofSensorWatcher;
 import original.apache.http.entity.HttpEntityWrapper;
 
@@ -86,7 +86,7 @@ class ResponseEntityProxy extends HttpEntityWrapper implements EofSensorWatcher 
 
     @Override
     public InputStream getContent() throws IOException {
-        return new EofSensorInputStreamHC4(this.wrappedEntity.getContent(), this);
+        return new EofSensorInputStream(this.wrappedEntity.getContent(), this);
     }
 
     @Deprecated
