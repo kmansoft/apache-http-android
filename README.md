@@ -1,5 +1,5 @@
 # apache-http-android
-Android HTTP client repackaged and fixed up for Android, useful for Android M where it's been removed from the system
+Android HTTP client repackaged and fixed up for Android, useful for Android M where it's been removed from the system.
 
 **Started with:**
 
@@ -19,11 +19,11 @@ Removed individual files from Apache-http-core (included in the official port an
 
 Makes the library fully independent of Android code.
 
-The official Android port referenced some classes from Apache HTTP Core which are still present in the M preview (I guess), but who knows, they may disappear in later M builds.
+The official Android port referenced some classes from Apache-http-core which are still present in the M preview (I guess), but who knows, they may disappear in later M builds. It also included some classes from Apache-http-core, they were just dropped into the source tree of Apache-http-client.
 
-I also wasn't happy with mixing Apache HTTP Client 4.3.5 with older versions of Apache HTTP Core classes from Android (which may even be changed by some clever device manufacturer...)
+I wasn't happy with mixing a recent version of Apache-http-client with some older versions of Apache-http-core classes in Android (which may even be changed by some clever device manufacturer...) and wasn't happy about mixing the source code of two components (Apache-http-client and parts of Apache-http-core) in a single tree.
 
-As a result, the library is self-contained and is more predictable at runtime on all Android versions, not just M.
+The library is now fully self-contained and is more predictable at runtime on all Android versions, not just M.
 
 **Fixed Basic auth, broken in official release:**
 
