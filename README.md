@@ -1,13 +1,13 @@
 # apache-http-android
 Android HTTP client repackaged and fixed up for Android, useful for Android M where it's been removed from the system
 
-### Started with:
+** Started with:
 
 Official Apache client port for Android
 
 https://hc.apache.org/httpcomponents-client-4.3.x/android-port.html
 
-### Packaging changes:
+** Packaging changes:
 
 New package name, original.apache.http
 
@@ -15,7 +15,7 @@ Reverted the renaming of some classes to have HC4 suffix (details as link above)
 
 Removed individual files from Apache-http-core (included in the official port and mixed with Apache-http-client files there), added httcomponents-core 4.3.4 instead, as a separate build unit.
 
-Rationale:
+* Rationale:
 
 Makes the library fully independent of Android code.
 
@@ -25,11 +25,11 @@ I also wasn't happy with mixing Apache HTTP Client 4.3.5 with older versions of 
 
 As a result, the library is self-contained and is more predictable at runtime on all Android versions, not just M.
 
-### Fixed Basic auth, broken in official release
+** Fixed Basic auth, broken in official release
 
-Was broken due to a typo (Apache Base64 -> Android Base64)
+Was brokenBasic auth, broken because of a typo when changing Apache Base64 -> Android Base64. kmansoft@1f748ecc3ef765deea97fa2d86aa4db8d40b0342.
 
-### Logging can now be routed through callbacks
+** Logging can now be routed through callbacks
 
 In the official release, Apache Commons logging has been replaced with direct calls to Android Log.*.
 
