@@ -27,7 +27,7 @@ As a result, the library is self-contained and is more predictable at runtime on
 
 ** Fixed Basic auth, broken in official release
 
-Was brokenBasic auth, broken because of a typo when changing Apache Base64 -> Android Base64. kmansoft@1f748ecc3ef765deea97fa2d86aa4db8d40b0342.
+Was brokenBasic auth, broken because of a typo when changing [Apache Base64 to Android Base64]( https://github.com/kmansoft/apache-http-android/commit/1f748ecc3ef765deea97fa2d86aa4db8d40b0342).
 
 ** Logging can now be routed through callbacks
 
