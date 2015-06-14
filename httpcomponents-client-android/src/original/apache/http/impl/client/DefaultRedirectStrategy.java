@@ -31,7 +31,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Locale;
 
-import android.util.Log;
+import org.kman.apache.http.logging.Logger;
 import original.apache.http.Header;
 import original.apache.http.HttpHost;
 import original.apache.http.HttpRequest;
@@ -135,8 +135,8 @@ public class DefaultRedirectStrategy implements RedirectStrategy {
                     + " but no location header");
         }
         final String location = locationHeader.getValue();
-        if (Log.isLoggable(TAG, Log.DEBUG)) {
-            Log.d(TAG, "Redirect requested to location '" + location + "'");
+        if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+            Logger.d(TAG, "Redirect requested to location '" + location + "'");
         }
 
         final RequestConfig config = clientContext.getRequestConfig();

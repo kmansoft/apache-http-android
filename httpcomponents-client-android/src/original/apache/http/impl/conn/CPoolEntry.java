@@ -30,7 +30,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-import android.util.Log;
+import org.kman.apache.http.logging.Logger;
 import original.apache.http.HttpClientConnection;
 import original.apache.http.annotation.ThreadSafe;
 import original.apache.http.conn.ManagedHttpClientConnection;
@@ -76,8 +76,8 @@ class CPoolEntry extends PoolEntry<HttpRoute, ManagedHttpClientConnection> {
     @Override
     public boolean isExpired(final long now) {
         final boolean expired = super.isExpired(now);
-        if (expired && Log.isLoggable(TAG, Log.DEBUG)) {
-            Log.d(TAG, "Connection " + this + " expired @ " + new Date(getExpiry()));
+        if (expired && Logger.isLoggable(TAG, Logger.DEBUG)) {
+            Logger.d(TAG, "Connection " + this + " expired @ " + new Date(getExpiry()));
         }
         return expired;
     }
@@ -93,8 +93,8 @@ class CPoolEntry extends PoolEntry<HttpRoute, ManagedHttpClientConnection> {
         try {
             closeConnection();
         } catch (final IOException ex) {
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "I/O error closing connection", ex);
+            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                Logger.d(TAG, "I/O error closing connection", ex);
             }
         }
     }

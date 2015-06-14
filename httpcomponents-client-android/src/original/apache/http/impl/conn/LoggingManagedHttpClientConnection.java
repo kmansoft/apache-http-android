@@ -27,7 +27,7 @@
 
 package original.apache.http.impl.conn;
 
-import android.util.Log;
+import org.kman.apache.http.logging.Logger;
 import original.apache.http.Header;
 import original.apache.http.HttpRequest;
 import original.apache.http.HttpResponse;
@@ -70,16 +70,16 @@ class LoggingManagedHttpClientConnection extends DefaultManagedHttpClientConnect
 
     @Override
     public void close() throws IOException {
-        if (Log.isLoggable(TAG, Log.DEBUG)) {
-            Log.d(TAG, getId() + ": Close connection");
+        if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+            Logger.d(TAG, getId() + ": Close connection");
         }
         super.close();
     }
 
     @Override
     public void shutdown() throws IOException {
-        if (Log.isLoggable(TAG, Log.DEBUG)) {
-            Log.d(TAG, getId() + ": Shutdown connection");
+        if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+            Logger.d(TAG, getId() + ": Shutdown connection");
         }
         super.shutdown();
     }
@@ -104,22 +104,22 @@ class LoggingManagedHttpClientConnection extends DefaultManagedHttpClientConnect
 
     @Override
     protected void onResponseReceived(final HttpResponse response) {
-        if (response != null && Log.isLoggable(HEADER_TAG, Log.DEBUG)) {
-            Log.d(HEADER_TAG, getId() + " << " + response.getStatusLine().toString());
+        if (response != null && Logger.isLoggable(HEADER_TAG, Logger.DEBUG)) {
+            Logger.d(HEADER_TAG, getId() + " << " + response.getStatusLine().toString());
             final Header[] headers = response.getAllHeaders();
             for (final Header header : headers) {
-                Log.d(HEADER_TAG, getId() + " << " + header.toString());
+                Logger.d(HEADER_TAG, getId() + " << " + header.toString());
             }
         }
     }
 
     @Override
     protected void onRequestSubmitted(final HttpRequest request) {
-        if (request != null && Log.isLoggable(HEADER_TAG, Log.DEBUG)) {
-            Log.d(HEADER_TAG, getId() + " >> " + request.getRequestLine().toString());
+        if (request != null && Logger.isLoggable(HEADER_TAG, Logger.DEBUG)) {
+            Logger.d(HEADER_TAG, getId() + " >> " + request.getRequestLine().toString());
             final Header[] headers = request.getAllHeaders();
             for (final Header header : headers) {
-                Log.d(HEADER_TAG, getId() + " >> " + header.toString());
+                Logger.d(HEADER_TAG, getId() + " >> " + header.toString());
             }
         }
     }

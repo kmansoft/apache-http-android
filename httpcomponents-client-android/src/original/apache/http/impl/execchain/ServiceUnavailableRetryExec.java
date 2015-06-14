@@ -30,7 +30,7 @@ package original.apache.http.impl.execchain;
 import java.io.IOException;
 import java.io.InterruptedIOException;
 
-import android.util.Log;
+import org.kman.apache.http.logging.Logger;
 import original.apache.http.Header;
 import original.apache.http.HttpException;
 import original.apache.http.annotation.Immutable;
@@ -86,8 +86,8 @@ public class ServiceUnavailableRetryExec implements ClientExecChain {
                     final long nextInterval = this.retryStrategy.getRetryInterval();
                     if (nextInterval > 0) {
                         try {
-                            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                                Log.d(TAG, "Wait for " + nextInterval);
+                            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                                Logger.d(TAG, "Wait for " + nextInterval);
                             }
                             Thread.sleep(nextInterval);
                         } catch (final InterruptedException e) {

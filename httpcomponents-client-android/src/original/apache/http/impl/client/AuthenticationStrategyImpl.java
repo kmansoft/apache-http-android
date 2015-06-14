@@ -37,7 +37,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Queue;
 
-import android.util.Log;
+import org.kman.apache.http.logging.Logger;
 import original.apache.http.FormattedHeader;
 import original.apache.http.Header;
 import original.apache.http.HttpHost;
@@ -143,15 +143,15 @@ abstract class AuthenticationStrategyImpl implements AuthenticationStrategy {
         final Queue<AuthOption> options = new LinkedList<AuthOption>();
         final Lookup<AuthSchemeProvider> registry = clientContext.getAuthSchemeRegistry();
         if (registry == null) {
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "Auth scheme registry not set in the context");
+            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                Logger.d(TAG, "Auth scheme registry not set in the context");
             }
             return options;
         }
         final CredentialsProvider credsProvider = clientContext.getCredentialsProvider();
         if (credsProvider == null) {
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "Credentials provider not set in the context");
+            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                Logger.d(TAG, "Credentials provider not set in the context");
             }
             return options;
         }
@@ -160,8 +160,8 @@ abstract class AuthenticationStrategyImpl implements AuthenticationStrategy {
         if (authPrefs == null) {
             authPrefs = DEFAULT_SCHEME_PRIORITY;
         }
-        if (Log.isLoggable(TAG, Log.DEBUG)) {
-            Log.d(TAG, "Authentication schemes in the order of preference: " + authPrefs);
+        if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+            Logger.d(TAG, "Authentication schemes in the order of preference: " + authPrefs);
         }
 
         for (final String id: authPrefs) {
@@ -169,8 +169,8 @@ abstract class AuthenticationStrategyImpl implements AuthenticationStrategy {
             if (challenge != null) {
                 final AuthSchemeProvider authSchemeProvider = registry.lookup(id);
                 if (authSchemeProvider == null) {
-                    if (Log.isLoggable(TAG, Log.WARN)) {
-                        Log.w(TAG, "Authentication scheme " + id + " not supported");
+                    if (Logger.isLoggable(TAG, Logger.WARN)) {
+                        Logger.w(TAG, "Authentication scheme " + id + " not supported");
                         // Try again
                     }
                     continue;
@@ -189,8 +189,8 @@ abstract class AuthenticationStrategyImpl implements AuthenticationStrategy {
                     options.add(new AuthOption(authScheme, credentials));
                 }
             } else {
-                if (Log.isLoggable(TAG, Log.DEBUG)) {
-                    Log.d(TAG, "Challenge for " + id + " authentication scheme not available");
+                if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                    Logger.d(TAG, "Challenge for " + id + " authentication scheme not available");
                     // Try again
                 }
             }
@@ -212,8 +212,8 @@ abstract class AuthenticationStrategyImpl implements AuthenticationStrategy {
                 authCache = new BasicAuthCache();
                 clientContext.setAuthCache(authCache);
             }
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "Caching '" + authScheme.getSchemeName() +
+            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                Logger.d(TAG, "Caching '" + authScheme.getSchemeName() +
                         "' auth scheme for " + authhost);
             }
             authCache.put(authhost, authScheme);
@@ -238,8 +238,8 @@ abstract class AuthenticationStrategyImpl implements AuthenticationStrategy {
 
         final AuthCache authCache = clientContext.getAuthCache();
         if (authCache != null) {
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "Clearing cached auth scheme for " + authhost);
+            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                Logger.d(TAG, "Clearing cached auth scheme for " + authhost);
             }
             authCache.remove(authhost);
         }

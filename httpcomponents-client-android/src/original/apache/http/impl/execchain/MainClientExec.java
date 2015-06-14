@@ -71,7 +71,7 @@ import original.apache.http.protocol.ImmutableHttpProcessor;
 import original.apache.http.protocol.RequestTargetHost;
 import original.apache.http.util.Args;
 import original.apache.http.util.EntityUtils;
-import android.util.Log;
+import org.kman.apache.http.logging.Logger;
 
 /**
  * The last request executor in the HTTP request execution chain
@@ -186,12 +186,12 @@ public class MainClientExec implements ClientExecChain {
         if (config.isStaleConnectionCheckEnabled()) {
             // validate connection
             if (managedConn.isOpen()) {
-                if (Log.isLoggable(TAG, Log.DEBUG)) {
-                    Log.d(TAG, "Stale connection check");
+                if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                    Logger.d(TAG, "Stale connection check");
                 }
                 if (managedConn.isStale()) {
-                    if (Log.isLoggable(TAG, Log.DEBUG)) {
-                        Log.d(TAG, "Stale connection detected");
+                    if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                        Logger.d(TAG, "Stale connection detected");
                     }
                     managedConn.close();
                 }
@@ -217,14 +217,14 @@ public class MainClientExec implements ClientExecChain {
                 }
 
                 if (!managedConn.isOpen()) {
-                    if (Log.isLoggable(TAG, Log.DEBUG)) {
-                        Log.d(TAG, "Opening connection " + route);
+                    if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                        Logger.d(TAG, "Opening connection " + route);
                     }
                     try {
                         establishRoute(proxyAuthState, managedConn, route, request, context);
                     } catch (final TunnelRefusedException ex) {
-                        if (Log.isLoggable(TAG, Log.DEBUG)) {
-                            Log.d(TAG, ex.getMessage());
+                        if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                            Logger.d(TAG, ex.getMessage());
                         }
                         response = ex.getResponse();
                         break;
@@ -239,19 +239,19 @@ public class MainClientExec implements ClientExecChain {
                     throw new RequestAbortedException("Request aborted");
                 }
 
-                if (Log.isLoggable(TAG, Log.DEBUG)) {
-                    Log.d(TAG, "Executing request " + request.getRequestLine());
+                if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                    Logger.d(TAG, "Executing request " + request.getRequestLine());
                 }
 
                 if (!request.containsHeader(AUTH.WWW_AUTH_RESP)) {
-                    if (Log.isLoggable(TAG, Log.DEBUG)) {
-                        Log.d(TAG, "Target auth state: " + targetAuthState.getState());
+                    if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                        Logger.d(TAG, "Target auth state: " + targetAuthState.getState());
                     }
                     this.authenticator.generateAuthResponse(request, targetAuthState, context);
                 }
                 if (!request.containsHeader(AUTH.PROXY_AUTH_RESP) && !route.isTunnelled()) {
-                    if (Log.isLoggable(TAG, Log.DEBUG)) {
-                        Log.d(TAG, "Proxy auth state: " + proxyAuthState.getState());
+                    if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                        Logger.d(TAG, "Proxy auth state: " + proxyAuthState.getState());
                     }
                     this.authenticator.generateAuthResponse(request, proxyAuthState, context);
                 }
@@ -262,14 +262,14 @@ public class MainClientExec implements ClientExecChain {
                 if (reuseStrategy.keepAlive(response, context)) {
                     // Set the idle duration of this connection
                     final long duration = keepAliveStrategy.getKeepAliveDuration(response, context);
-                    if (Log.isLoggable(TAG, Log.DEBUG)) {
+                    if (Logger.isLoggable(TAG, Logger.DEBUG)) {
                         final String s;
                         if (duration > 0) {
                             s = "for " + duration + " " + TimeUnit.MILLISECONDS;
                         } else {
                             s = "indefinitely";
                         }
-                        Log.d(TAG, "Connection can be kept alive " + s);
+                        Logger.d(TAG, "Connection can be kept alive " + s);
                     }
                     connHolder.setValidFor(duration, TimeUnit.MILLISECONDS);
                     connHolder.markReusable();
@@ -288,16 +288,16 @@ public class MainClientExec implements ClientExecChain {
                         if (proxyAuthState.getState() == AuthProtocolState.SUCCESS
                                 && proxyAuthState.getAuthScheme() != null
                                 && proxyAuthState.getAuthScheme().isConnectionBased()) {
-                            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                                Log.d(TAG, "Resetting proxy auth state");
+                            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                                Logger.d(TAG, "Resetting proxy auth state");
                             }
                             proxyAuthState.reset();
                         }
                         if (targetAuthState.getState() == AuthProtocolState.SUCCESS
                                 && targetAuthState.getAuthScheme() != null
                                 && targetAuthState.getAuthScheme().isConnectionBased()) {
-                            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                                Log.d(TAG, "Resetting target auth state");
+                            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                                Logger.d(TAG, "Resetting target auth state");
                             }
                             targetAuthState.reset();
                         }
@@ -388,8 +388,8 @@ public class MainClientExec implements ClientExecChain {
             case HttpRouteDirector.TUNNEL_TARGET: {
                 final boolean secure = createTunnelToTarget(
                         proxyAuthState, managedConn, route, request, context);
-                if (Log.isLoggable(TAG, Log.DEBUG)) {
-                    Log.d(TAG, "Tunnel to target created.");
+                if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                    Logger.d(TAG, "Tunnel to target created.");
                 }
                 tracker.tunnelTarget(secure);
             }   break;
@@ -401,8 +401,8 @@ public class MainClientExec implements ClientExecChain {
                 // fact:  Source -> P1 -> Target       (2 hops)
                 final int hop = fact.getHopCount()-1; // the hop to establish
                 final boolean secure = createTunnelToProxy(route, hop, context);
-                if (Log.isLoggable(TAG, Log.DEBUG)) {
-                    Log.d(TAG, "Tunnel to proxy created.");
+                if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                    Logger.d(TAG, "Tunnel to proxy created.");
                 }
                 tracker.tunnelProxy(route.getHopTarget(hop), secure);
             }   break;
@@ -480,8 +480,8 @@ public class MainClientExec implements ClientExecChain {
                             this.proxyAuthStrategy, proxyAuthState, context)) {
                         // Retry request
                         if (this.reuseStrategy.keepAlive(response, context)) {
-                            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                                Log.d(TAG, "Connection kept alive");
+                            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                                Logger.d(TAG, "Connection kept alive");
                             }
                             // Consume response content
                             final HttpEntity entity = response.getEntity();

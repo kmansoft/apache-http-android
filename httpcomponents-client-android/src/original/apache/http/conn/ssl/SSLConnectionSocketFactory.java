@@ -30,7 +30,7 @@ package original.apache.http.conn.ssl;
 import android.annotation.TargetApi;
 import android.net.SSLCertificateSocketFactory;
 import android.os.Build;
-import android.util.Log;
+import org.kman.apache.http.logging.Logger;
 
 import original.apache.http.conn.ssl.X509HostnameVerifier;
 
@@ -287,8 +287,8 @@ public class SSLConnectionSocketFactory implements LayeredConnectionSocketFactor
         // Android specific code to enable SNI
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             if (this.socketfactory instanceof SSLCertificateSocketFactory) {
-                if (Log.isLoggable(TAG, Log.DEBUG)) {
-                    Log.d(TAG, "Enabling SNI for " + target);
+                if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                    Logger.d(TAG, "Enabling SNI for " + target);
                 }
                 ((SSLCertificateSocketFactory) this.socketfactory).setHostname(sslsock, target);
             }

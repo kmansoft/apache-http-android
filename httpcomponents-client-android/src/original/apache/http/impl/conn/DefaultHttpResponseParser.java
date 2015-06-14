@@ -45,7 +45,7 @@ import original.apache.http.message.ParserCursor;
 import original.apache.http.params.HttpParams;
 import original.apache.http.util.Args;
 import original.apache.http.util.CharArrayBuffer;
-import android.util.Log;
+import org.kman.apache.http.logging.Logger;
 
 /**
  * Lenient HTTP response parser implementation that can skip malformed data until
@@ -150,8 +150,8 @@ public class DefaultHttpResponseParser extends AbstractMessageParser<HttpRespons
                 throw new ProtocolException("The server failed to respond with a " +
                         "valid HTTP response");
             }
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "Garbage in response: " + this.lineBuf.toString());
+            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                Logger.d(TAG, "Garbage in response: " + this.lineBuf.toString());
             }
             count++;
         } while(true);

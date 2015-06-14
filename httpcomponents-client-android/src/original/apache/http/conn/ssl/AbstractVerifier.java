@@ -46,7 +46,7 @@ import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 
-import android.util.Log;
+import org.kman.apache.http.logging.Logger;
 
 import original.apache.http.conn.ssl.X509HostnameVerifier;
 
@@ -378,7 +378,7 @@ public abstract class AbstractVerifier implements X509HostnameVerifier {
             final InetAddress inetAddress = InetAddress.getByName(hostname);
             return inetAddress.getHostAddress();
         } catch (final UnknownHostException uhe) { // Should not happen, because we check for IPv6 address above
-            Log.e(TAG, "Unexpected error converting "+hostname, uhe);
+            Logger.e(TAG, "Unexpected error converting "+hostname, uhe);
             return hostname;
         }
     }

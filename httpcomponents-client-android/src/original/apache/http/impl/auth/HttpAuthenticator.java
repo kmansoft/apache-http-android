@@ -32,7 +32,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Queue;
 
-import android.util.Log;
+import org.kman.apache.http.logging.Logger;
 import original.apache.http.Header;
 import original.apache.http.HttpException;
 import original.apache.http.HttpHost;
@@ -68,8 +68,8 @@ public class HttpAuthenticator {
             final AuthState authState,
             final HttpContext context) {
         if (authStrategy.isAuthenticationRequested(host, response, context)) {
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "Authentication required");
+            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                Logger.d(TAG, "Authentication required");
             }
             if (authState.getState() == AuthProtocolState.SUCCESS) {
                 authStrategy.authFailed(host, authState.getAuthScheme(), context);
@@ -79,8 +79,8 @@ public class HttpAuthenticator {
             switch (authState.getState()) {
             case CHALLENGED:
             case HANDSHAKE:
-                if (Log.isLoggable(TAG, Log.DEBUG)) {
-                    Log.d(TAG, "Authentication succeeded");
+                if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                    Logger.d(TAG, "Authentication succeeded");
                 }
                 authState.setState(AuthProtocolState.SUCCESS);
                 authStrategy.authSucceeded(host, authState.getAuthScheme(), context);
@@ -101,13 +101,13 @@ public class HttpAuthenticator {
             final AuthState authState,
             final HttpContext context) {
         try {
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, host.toHostString() + " requested authentication");
+            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                Logger.d(TAG, host.toHostString() + " requested authentication");
             }
             final Map<String, Header> challenges = authStrategy.getChallenges(host, response, context);
             if (challenges.isEmpty()) {
-                if (Log.isLoggable(TAG, Log.DEBUG)) {
-                    Log.d(TAG, "Response contains no authentication challenges");
+                if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                    Logger.d(TAG, "Response contains no authentication challenges");
                 }
                 return false;
             }
@@ -122,8 +122,8 @@ public class HttpAuthenticator {
             case CHALLENGED:
             case HANDSHAKE:
                 if (authScheme == null) {
-                    if (Log.isLoggable(TAG, Log.DEBUG)) {
-                        Log.d(TAG, "Auth scheme is null");
+                    if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                        Logger.d(TAG, "Auth scheme is null");
                     }
                     authStrategy.authFailed(host, null, context);
                     authState.reset();
@@ -135,13 +135,13 @@ public class HttpAuthenticator {
                     final String id = authScheme.getSchemeName();
                     final Header challenge = challenges.get(id.toLowerCase(Locale.ENGLISH));
                     if (challenge != null) {
-                        if (Log.isLoggable(TAG, Log.DEBUG)) {
-                            Log.d(TAG, "Authorization challenge processed");
+                        if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                            Logger.d(TAG, "Authorization challenge processed");
                         }
                         authScheme.processChallenge(challenge);
                         if (authScheme.isComplete()) {
-                            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                                Log.d(TAG, "Authentication failed");
+                            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                                Logger.d(TAG, "Authentication failed");
                             }
                             authStrategy.authFailed(host, authState.getAuthScheme(), context);
                             authState.reset();
@@ -159,8 +159,8 @@ public class HttpAuthenticator {
             }
             final Queue<AuthOption> authOptions = authStrategy.select(challenges, host, response, context);
             if (authOptions != null && !authOptions.isEmpty()) {
-                if (Log.isLoggable(TAG, Log.DEBUG)) {
-                    Log.d(TAG, "Selected authentication options: " + authOptions);
+                if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                    Logger.d(TAG, "Selected authentication options: " + authOptions);
                 }
                 authState.setState(AuthProtocolState.CHALLENGED);
                 authState.update(authOptions);
@@ -169,8 +169,8 @@ public class HttpAuthenticator {
                 return false;
             }
         } catch (final MalformedChallengeException ex) {
-            if (Log.isLoggable(TAG, Log.WARN)) {
-                Log.w(TAG, "Malformed challenge: " +  ex.getMessage());
+            if (Logger.isLoggable(TAG, Logger.WARN)) {
+                Logger.w(TAG, "Malformed challenge: " +  ex.getMessage());
             }
             authState.reset();
             return false;
@@ -200,8 +200,8 @@ public class HttpAuthenticator {
                     authScheme = authOption.getAuthScheme();
                     creds = authOption.getCredentials();
                     authState.update(authScheme, creds);
-                    if (Log.isLoggable(TAG, Log.DEBUG)) {
-                        Log.d(TAG, "Generating response to an authentication challenge using "
+                    if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                        Logger.d(TAG, "Generating response to an authentication challenge using "
                                 + authScheme.getSchemeName() + " scheme");
                     }
                     try {
@@ -209,8 +209,8 @@ public class HttpAuthenticator {
                         request.addHeader(header);
                         break;
                     } catch (final AuthenticationException ex) {
-                        if (Log.isLoggable(TAG, Log.WARN)) {
-                            Log.w(TAG, authScheme + " authentication error: " + ex.getMessage());
+                        if (Logger.isLoggable(TAG, Logger.WARN)) {
+                            Logger.w(TAG, authScheme + " authentication error: " + ex.getMessage());
                         }
                     }
                 }
@@ -224,8 +224,8 @@ public class HttpAuthenticator {
                 final Header header = doAuth(authScheme, creds, request, context);
                 request.addHeader(header);
             } catch (final AuthenticationException ex) {
-                if (Log.isLoggable(TAG, Log.ERROR)) {
-                    Log.e(TAG, authScheme + " authentication error: " + ex.getMessage());
+                if (Logger.isLoggable(TAG, Logger.ERROR)) {
+                    Logger.e(TAG, authScheme + " authentication error: " + ex.getMessage());
                 }
             }
         }

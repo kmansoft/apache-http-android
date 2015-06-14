@@ -31,7 +31,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import android.util.Log;
+import org.kman.apache.http.logging.Logger;
 import original.apache.http.HttpClientConnection;
 import original.apache.http.annotation.ThreadSafe;
 import original.apache.http.concurrent.Cancellable;
@@ -100,12 +100,12 @@ class ConnectionHolder implements ConnectionReleaseTrigger, Cancellable, Closeab
             } else {
                 try {
                     this.managedConn.close();
-                    if (Log.isLoggable(TAG, Log.DEBUG)) {
-                        Log.d(TAG, "Connection discarded");
+                    if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                        Logger.d(TAG, "Connection discarded");
                     }
                 } catch (final IOException ex) {
-                    if (Log.isLoggable(TAG, Log.DEBUG)) {
-                        Log.d(TAG, ex.getMessage(), ex);
+                    if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                        Logger.d(TAG, ex.getMessage(), ex);
                     }
                 } finally {
                     this.manager.releaseConnection(
@@ -123,12 +123,12 @@ class ConnectionHolder implements ConnectionReleaseTrigger, Cancellable, Closeab
             this.released = true;
             try {
                 this.managedConn.shutdown();
-                if (Log.isLoggable(TAG, Log.DEBUG)) {
-                    Log.d(TAG, "Connection discarded");
+                if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                    Logger.d(TAG, "Connection discarded");
                 }
             } catch (final IOException ex) {
-                if (Log.isLoggable(TAG, Log.DEBUG)) {
-                    Log.d(TAG, ex.getMessage(), ex);
+                if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                    Logger.d(TAG, ex.getMessage(), ex);
                 }
             } finally {
                 this.manager.releaseConnection(
@@ -139,8 +139,8 @@ class ConnectionHolder implements ConnectionReleaseTrigger, Cancellable, Closeab
 
     public boolean cancel() {
         final boolean alreadyReleased = this.released;
-        if (Log.isLoggable(TAG, Log.DEBUG)) {
-            Log.d(TAG, "Cancelling request execution");
+        if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+            Logger.d(TAG, "Cancelling request execution");
         }
         abortConnection();
         return !alreadyReleased;

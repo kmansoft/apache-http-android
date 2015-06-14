@@ -32,7 +32,7 @@ import java.io.InputStream;
 
 import org.kman.apache.http.logging.WireCallback;
 
-import android.util.Log;
+import org.kman.apache.http.logging.Logger;
 import original.apache.http.annotation.Immutable;
 import original.apache.http.util.Args;
 
@@ -82,7 +82,7 @@ public class Wire {
                     buffer.append("[\\n]\"");
                     buffer.insert(0, "\"");
                     buffer.insert(0, header);
-                    Log.d(TAG, id + " " + buffer.toString());
+                    Logger.d(TAG, id + " " + buffer.toString());
                     buffer.setLength(0);
             } else if ((ch < 32) || (ch > 127)) {
                 buffer.append("[0x");
@@ -96,7 +96,7 @@ public class Wire {
             buffer.append('\"');
             buffer.insert(0, '\"');
             buffer.insert(0, header);
-            Log.d(TAG, id + " " + buffer.toString());
+            Logger.d(TAG, id + " " + buffer.toString());
         }
     }
 
@@ -107,7 +107,7 @@ public class Wire {
     	if (callback != null) {
     		return callback.isWireLogEnabled();
     	}
-        return Log.isLoggable(TAG, Log.DEBUG);
+        return Logger.isLoggable(TAG, Logger.DEBUG);
     }
 
     public void output(final InputStream outstream)

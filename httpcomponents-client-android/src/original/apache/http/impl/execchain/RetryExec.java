@@ -29,7 +29,7 @@ package original.apache.http.impl.execchain;
 
 import java.io.IOException;
 
-import android.util.Log;
+import org.kman.apache.http.logging.Logger;
 import original.apache.http.Header;
 import original.apache.http.HttpException;
 import original.apache.http.NoHttpResponseException;
@@ -85,33 +85,33 @@ public class RetryExec implements ClientExecChain {
                 return this.requestExecutor.execute(route, request, context, execAware);
             } catch (final IOException ex) {
                 if (execAware != null && execAware.isAborted()) {
-                    if (Log.isLoggable(TAG, Log.DEBUG)) {
-                        Log.d(TAG, "Request has been aborted");
+                    if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                        Logger.d(TAG, "Request has been aborted");
                     }
                     throw ex;
                 }
                 if (retryHandler.retryRequest(ex, execCount, context)) {
-                    if (Log.isLoggable(TAG, Log.INFO)) {
-                        Log.i(TAG, "I/O exception ("+ ex.getClass().getName() +
+                    if (Logger.isLoggable(TAG, Logger.INFO)) {
+                        Logger.i(TAG, "I/O exception ("+ ex.getClass().getName() +
                                 ") caught when processing request to "
                                 + route +
                                 ": "
                                 + ex.getMessage());
                     }
-                    if (Log.isLoggable(TAG, Log.DEBUG)) {
-                        Log.d(TAG, ex.getMessage(), ex);
+                    if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                        Logger.d(TAG, ex.getMessage(), ex);
                     }
                     if (!RequestEntityProxy.isRepeatable(request)) {
-                        if (Log.isLoggable(TAG, Log.DEBUG)) {
-                            Log.d(TAG, "Cannot retry non-repeatable request");
+                        if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                            Logger.d(TAG, "Cannot retry non-repeatable request");
                         }
                         final NonRepeatableRequestException nreex = new NonRepeatableRequestException(
                                 "Cannot retry request with a non-repeatable request entity");
                         nreex.initCause(ex);
                     }
                     request.setHeaders(origheaders);
-                    if (Log.isLoggable(TAG, Log.INFO)) {
-                        Log.i(TAG, "Retrying request to " + route);
+                    if (Logger.isLoggable(TAG, Logger.INFO)) {
+                        Logger.i(TAG, "Retrying request to " + route);
                     }
                 } else {
                     if (ex instanceof NoHttpResponseException) {

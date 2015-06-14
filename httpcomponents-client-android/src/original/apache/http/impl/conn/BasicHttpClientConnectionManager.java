@@ -34,7 +34,7 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import android.util.Log;
+import org.kman.apache.http.logging.Logger;
 import original.apache.http.HttpClientConnection;
 import original.apache.http.HttpHost;
 import original.apache.http.annotation.GuardedBy;
@@ -204,14 +204,14 @@ public class BasicHttpClientConnectionManager implements HttpClientConnectionMan
 
     private void closeConnection() {
         if (this.conn != null) {
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "Closing connection");
+            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                Logger.d(TAG, "Closing connection");
             }
             try {
                 this.conn.close();
             } catch (final IOException iox) {
-                if (Log.isLoggable(TAG, Log.DEBUG)) {
-                    Log.d(TAG, "I/O exception closing connection", iox);
+                if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                    Logger.d(TAG, "I/O exception closing connection", iox);
                 }
             }
             this.conn = null;
@@ -220,14 +220,14 @@ public class BasicHttpClientConnectionManager implements HttpClientConnectionMan
 
     private void shutdownConnection() {
         if (this.conn != null) {
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "Shutting down connection");
+            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                Logger.d(TAG, "Shutting down connection");
             }
             try {
                 this.conn.shutdown();
             } catch (final IOException iox) {
-                if (Log.isLoggable(TAG, Log.DEBUG)) {
-                    Log.d(TAG, "I/O exception shutting down connection", iox);
+                if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                    Logger.d(TAG, "I/O exception shutting down connection", iox);
                 }
             }
             this.conn = null;
@@ -236,8 +236,8 @@ public class BasicHttpClientConnectionManager implements HttpClientConnectionMan
 
     private void checkExpiry() {
         if (this.conn != null && System.currentTimeMillis() >= this.expiry) {
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "Connection expired @ " + new Date(this.expiry));
+            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                Logger.d(TAG, "Connection expired @ " + new Date(this.expiry));
             }
             closeConnection();
         }
@@ -245,8 +245,8 @@ public class BasicHttpClientConnectionManager implements HttpClientConnectionMan
 
     synchronized HttpClientConnection getConnection(final HttpRoute route, final Object state) {
         Asserts.check(!this.isShutdown.get(), "Connection manager has been shut down");
-        if (Log.isLoggable(TAG, Log.DEBUG)) {
-            Log.d(TAG, "Get connection for route " + route);
+        if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+            Logger.d(TAG, "Get connection for route " + route);
         }
         Asserts.check(!this.leased, "Connection is still allocated");
         if (!LangUtils.equals(this.route, route) || !LangUtils.equals(this.state, state)) {
@@ -268,8 +268,8 @@ public class BasicHttpClientConnectionManager implements HttpClientConnectionMan
             final long keepalive, final TimeUnit tunit) {
         Args.notNull(conn, "Connection");
         Asserts.check(conn == this.conn, "Connection not obtained from this manager");
-        if (Log.isLoggable(TAG, Log.DEBUG)) {
-            Log.d(TAG, "Releasing connection " + conn);
+        if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+            Logger.d(TAG, "Releasing connection " + conn);
         }
         if (this.isShutdown.get()) {
             return;
@@ -283,14 +283,14 @@ public class BasicHttpClientConnectionManager implements HttpClientConnectionMan
                 this.expiry = Long.MAX_VALUE;
             } else {
                 this.state = state;
-                if (Log.isLoggable(TAG, Log.DEBUG)) {
+                if (Logger.isLoggable(TAG, Logger.DEBUG)) {
                     final String s;
                     if (keepalive > 0) {
                         s = "for " + keepalive + " " + tunit;
                     } else {
                         s = "indefinitely";
                     }
-                    Log.d(TAG, "Connection can be kept alive " + s);
+                    Logger.d(TAG, "Connection can be kept alive " + s);
                 }
                 if (keepalive > 0) {
                     this.expiry = this.updated + tunit.toMillis(keepalive);

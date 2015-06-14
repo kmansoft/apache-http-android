@@ -34,7 +34,7 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.Arrays;
 
-import android.util.Log;
+import org.kman.apache.http.logging.Logger;
 
 import original.apache.http.conn.ConnectTimeoutException;
 
@@ -118,15 +118,15 @@ class HttpClientConnectionOperator {
             conn.bind(sock);
 
             final InetSocketAddress remoteAddress = new InetSocketAddress(address, port);
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "Connecting to " + remoteAddress);
+            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                Logger.d(TAG, "Connecting to " + remoteAddress);
             }
             try {
                 sock = sf.connectSocket(
                         connectTimeout, sock, host, remoteAddress, localAddress, context);
                 conn.bind(sock);
-                if (Log.isLoggable(TAG, Log.DEBUG)) {
-                    Log.d(TAG, "Connection established " + conn);
+                if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                    Logger.d(TAG, "Connection established " + conn);
                 }
                 return;
             } catch (final SocketTimeoutException ex) {
@@ -148,8 +148,8 @@ class HttpClientConnectionOperator {
                     }
                 }
             }
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "Connect to " + remoteAddress + " timed out. " +
+            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                Logger.d(TAG, "Connect to " + remoteAddress + " timed out. " +
                         "Connection will be retried using another IP address");
             }
         }

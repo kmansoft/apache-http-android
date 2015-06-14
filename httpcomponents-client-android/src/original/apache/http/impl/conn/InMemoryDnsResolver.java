@@ -32,7 +32,7 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import android.util.Log;
+import org.kman.apache.http.logging.Logger;
 import original.apache.http.conn.DnsResolver;
 import original.apache.http.util.Args;
 
@@ -43,7 +43,7 @@ import original.apache.http.util.Args;
  */
 public class InMemoryDnsResolver implements DnsResolver {
 
-    /** Logger associated to this class. */
+    /** Logger.er associated to this class. */
     private final static String TAG = "HttpClient";
 
     /**
@@ -81,8 +81,8 @@ public class InMemoryDnsResolver implements DnsResolver {
      */
     public InetAddress[] resolve(final String host) throws UnknownHostException {
         final InetAddress[] resolvedAddresses = dnsMap.get(host);
-        if (Log.isLoggable(TAG, Log.INFO)) {
-            Log.i(TAG, "Resolving " + host + " to " + Arrays.deepToString(resolvedAddresses));
+        if (Logger.isLoggable(TAG, Logger.INFO)) {
+            Logger.i(TAG, "Resolving " + host + " to " + Arrays.deepToString(resolvedAddresses));
         }
         if(resolvedAddresses == null){
             throw new UnknownHostException(host + " cannot be resolved");

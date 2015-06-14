@@ -29,7 +29,7 @@ package original.apache.http.impl.conn;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
-import android.util.Log;
+import org.kman.apache.http.logging.Logger;
 import original.apache.http.annotation.ThreadSafe;
 import original.apache.http.conn.ManagedHttpClientConnection;
 import original.apache.http.conn.routing.HttpRoute;

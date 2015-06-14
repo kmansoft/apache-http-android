@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import android.util.Log;
+import org.kman.apache.http.logging.Logger;
 import original.apache.http.Header;
 import original.apache.http.HttpException;
 import original.apache.http.HttpHost;
@@ -87,8 +87,8 @@ public class RequestAddCookies implements HttpRequestInterceptor {
         // Obtain cookie store
         final CookieStore cookieStore = clientContext.getCookieStore();
         if (cookieStore == null) {
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "Cookie store not specified in HTTP context");
+            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                Logger.d(TAG, "Cookie store not specified in HTTP context");
             }
             return;
         }
@@ -96,8 +96,8 @@ public class RequestAddCookies implements HttpRequestInterceptor {
         // Obtain the registry of cookie specs
         final Lookup<CookieSpecProvider> registry = clientContext.getCookieSpecRegistry();
         if (registry == null) {
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "CookieSpec registry not specified in HTTP context");
+            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                Logger.d(TAG, "CookieSpec registry not specified in HTTP context");
             }
             return;
         }
@@ -105,8 +105,8 @@ public class RequestAddCookies implements HttpRequestInterceptor {
         // Obtain the target host, possibly virtual (required)
         final HttpHost targetHost = clientContext.getTargetHost();
         if (targetHost == null) {
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "Target host not set in the context");
+            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                Logger.d(TAG, "Target host not set in the context");
             }
             return;
         }
@@ -114,8 +114,8 @@ public class RequestAddCookies implements HttpRequestInterceptor {
         // Obtain the route (required)
         final RouteInfo route = clientContext.getHttpRoute();
         if (route == null) {
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "Connection route not set in the context");
+            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                Logger.d(TAG, "Connection route not set in the context");
             }
             return;
         }
@@ -125,8 +125,8 @@ public class RequestAddCookies implements HttpRequestInterceptor {
         if (policy == null) {
             policy = CookieSpecs.BEST_MATCH;
         }
-        if (Log.isLoggable(TAG, Log.DEBUG)) {
-            Log.d(TAG, "CookieSpec selected: " + policy);
+        if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+            Logger.d(TAG, "CookieSpec selected: " + policy);
         }
 
         URI requestURI = null;
@@ -165,14 +165,14 @@ public class RequestAddCookies implements HttpRequestInterceptor {
         for (final Cookie cookie : cookies) {
             if (!cookie.isExpired(now)) {
                 if (cookieSpec.match(cookie, cookieOrigin)) {
-                    if (Log.isLoggable(TAG, Log.DEBUG)) {
-                        Log.d(TAG, "Cookie " + cookie + " match " + cookieOrigin);
+                    if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                        Logger.d(TAG, "Cookie " + cookie + " match " + cookieOrigin);
                     }
                     matchedCookies.add(cookie);
                 }
             } else {
-                if (Log.isLoggable(TAG, Log.DEBUG)) {
-                    Log.d(TAG, "Cookie " + cookie + " expired");
+                if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                    Logger.d(TAG, "Cookie " + cookie + " expired");
                 }
             }
         }

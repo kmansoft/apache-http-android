@@ -32,7 +32,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import android.util.Log;
+import org.kman.apache.http.logging.Logger;
 
 import original.apache.http.params.HttpParams;
 
@@ -195,7 +195,7 @@ class InternalHttpClient extends CloseableHttpClient {
                 try {
                     closeable.close();
                 } catch (final IOException ex) {
-                    Log.e(TAG, ex.getMessage(), ex);
+                    Logger.e(TAG, ex.getMessage(), ex);
                 }
             }
         }

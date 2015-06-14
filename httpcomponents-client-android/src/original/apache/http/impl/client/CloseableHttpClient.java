@@ -32,7 +32,7 @@ import java.io.IOException;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.net.URI;
 
-import android.util.Log;
+import org.kman.apache.http.logging.Logger;
 import original.apache.http.HttpEntity;
 import original.apache.http.HttpHost;
 import original.apache.http.HttpRequest;
@@ -222,8 +222,8 @@ public abstract class CloseableHttpClient implements HttpClient, Closeable {
             } catch (final Exception t2) {
                 // Log this exception. The original exception is more
                 // important and will be thrown to the caller.
-                if (Log.isLoggable(TAG, Log.WARN)) {
-                    Log.w(TAG, "Error consuming content after an exception.", t2);
+                if (Logger.isLoggable(TAG, Logger.WARN)) {
+                    Logger.w(TAG, "Error consuming content after an exception.", t2);
                 }
             }
             if (t instanceof RuntimeException) {

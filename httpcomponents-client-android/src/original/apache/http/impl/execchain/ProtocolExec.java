@@ -31,7 +31,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import android.util.Log;
+import org.kman.apache.http.logging.Logger;
 
 import original.apache.http.params.HttpParams;
 
@@ -133,8 +133,8 @@ public class ProtocolExec implements ClientExecChain {
             try {
                 uri = URI.create(uriString);
             } catch (final IllegalArgumentException ex) {
-                if (Log.isLoggable(TAG, Log.DEBUG)) {
-                    Log.d(TAG, "Unable to parse '" + uriString + "' as a valid URI; " +
+                if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                    Logger.d(TAG, "Unable to parse '" + uriString + "' as a valid URI; " +
                         "request URI and Host header may be inconsistent", ex);
                 }
             }
@@ -154,8 +154,8 @@ public class ProtocolExec implements ClientExecChain {
                 virtualHost = new HttpHost(virtualHost.getHostName(), port,
                     virtualHost.getSchemeName());
             }
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "Using virtual host" + virtualHost);
+            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                Logger.d(TAG, "Using virtual host" + virtualHost);
             }
         }
 

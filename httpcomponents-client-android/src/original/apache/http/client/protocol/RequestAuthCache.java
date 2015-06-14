@@ -29,7 +29,7 @@ package original.apache.http.client.protocol;
 
 import java.io.IOException;
 
-import android.util.Log;
+import org.kman.apache.http.logging.Logger;
 import original.apache.http.HttpException;
 import original.apache.http.HttpHost;
 import original.apache.http.HttpRequest;
@@ -71,32 +71,32 @@ public class RequestAuthCache implements HttpRequestInterceptor {
 
         final AuthCache authCache = clientContext.getAuthCache();
         if (authCache == null) {
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "Auth cache not set in the context");
+            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                Logger.d(TAG, "Auth cache not set in the context");
             }
             return;
         }
 
         final CredentialsProvider credsProvider = clientContext.getCredentialsProvider();
         if (credsProvider == null) {
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "Credentials provider not set in the context");
+            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                Logger.d(TAG, "Credentials provider not set in the context");
             }
             return;
         }
 
         final RouteInfo route = clientContext.getHttpRoute();
         if (route == null) {
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "Route info not set in the context");
+            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                Logger.d(TAG, "Route info not set in the context");
             }
             return;
         }
 
         HttpHost target = clientContext.getTargetHost();
         if (target == null) {
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "Target host not set in the context");
+            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                Logger.d(TAG, "Target host not set in the context");
             }
             return;
         }
@@ -132,8 +132,8 @@ public class RequestAuthCache implements HttpRequestInterceptor {
             final AuthState authState,
             final CredentialsProvider credsProvider) {
         final String schemeName = authScheme.getSchemeName();
-        if (Log.isLoggable(TAG, Log.DEBUG)) {
-            Log.d(TAG, "Re-using cached '" + schemeName + "' auth scheme for " + host);
+        if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+            Logger.d(TAG, "Re-using cached '" + schemeName + "' auth scheme for " + host);
         }
 
         final AuthScope authScope = new AuthScope(host.getHostName(), host.getPort(), AuthScope.ANY_REALM, schemeName);
@@ -147,8 +147,8 @@ public class RequestAuthCache implements HttpRequestInterceptor {
             }
             authState.update(authScheme, creds);
         } else {
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "No credentials for preemptive authentication");
+            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                Logger.d(TAG, "No credentials for preemptive authentication");
             }
         }
     }

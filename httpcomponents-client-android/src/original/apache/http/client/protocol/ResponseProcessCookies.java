@@ -30,7 +30,7 @@ package original.apache.http.client.protocol;
 import java.io.IOException;
 import java.util.List;
 
-import android.util.Log;
+import org.kman.apache.http.logging.Logger;
 import original.apache.http.Header;
 import original.apache.http.HeaderIterator;
 import original.apache.http.HttpException;
@@ -71,24 +71,24 @@ public class ResponseProcessCookies implements HttpResponseInterceptor {
         // Obtain actual CookieSpec instance
         final CookieSpec cookieSpec = clientContext.getCookieSpec();
         if (cookieSpec == null) {
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "Cookie spec not specified in HTTP context");
+            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                Logger.d(TAG, "Cookie spec not specified in HTTP context");
             }
             return;
         }
         // Obtain cookie store
         final CookieStore cookieStore = clientContext.getCookieStore();
         if (cookieStore == null) {
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "Cookie store not specified in HTTP context");
+            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                Logger.d(TAG, "Cookie store not specified in HTTP context");
             }
             return;
         }
         // Obtain actual CookieOrigin instance
         final CookieOrigin cookieOrigin = clientContext.getCookieOrigin();
         if (cookieOrigin == null) {
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "Cookie origin not specified in HTTP context");
+            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                Logger.d(TAG, "Cookie origin not specified in HTTP context");
             }
             return;
         }
@@ -118,19 +118,19 @@ public class ResponseProcessCookies implements HttpResponseInterceptor {
                         cookieSpec.validate(cookie, cookieOrigin);
                         cookieStore.addCookie(cookie);
 
-                        if (Log.isLoggable(TAG, Log.DEBUG)) {
-                            Log.d(TAG, "Cookie accepted [" + formatCooke(cookie) + "]");
+                        if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                            Logger.d(TAG, "Cookie accepted [" + formatCooke(cookie) + "]");
                         }
                     } catch (final MalformedCookieException ex) {
-                        if (Log.isLoggable(TAG, Log.WARN)) {
-                            Log.w(TAG, "Cookie rejected [" + formatCooke(cookie) + "] "
+                        if (Logger.isLoggable(TAG, Logger.WARN)) {
+                            Logger.w(TAG, "Cookie rejected [" + formatCooke(cookie) + "] "
                                     + ex.getMessage());
                         }
                     }
                 }
             } catch (final MalformedCookieException ex) {
-                if (Log.isLoggable(TAG, Log.WARN)) {
-                    Log.w(TAG, "Invalid cookie header: \""
+                if (Logger.isLoggable(TAG, Logger.WARN)) {
+                    Logger.w(TAG, "Invalid cookie header: \""
                             + header + "\". " + ex.getMessage());
                 }
             }

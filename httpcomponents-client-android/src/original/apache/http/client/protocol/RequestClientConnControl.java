@@ -29,7 +29,7 @@ package original.apache.http.client.protocol;
 
 import java.io.IOException;
 
-import android.util.Log;
+import org.kman.apache.http.logging.Logger;
 import original.apache.http.HttpException;
 import original.apache.http.HttpRequest;
 import original.apache.http.HttpRequestInterceptor;
@@ -72,8 +72,8 @@ public class RequestClientConnControl implements HttpRequestInterceptor {
         // Obtain the client connection (required)
         final RouteInfo route = clientContext.getHttpRoute();
         if (route == null) {
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "Connection route not set in the context");
+            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                Logger.d(TAG, "Connection route not set in the context");
             }
             return;
         }

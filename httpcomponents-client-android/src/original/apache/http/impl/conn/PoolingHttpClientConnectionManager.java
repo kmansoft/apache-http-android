@@ -37,7 +37,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import android.util.Log;
+import org.kman.apache.http.logging.Logger;
 import original.apache.http.HttpClientConnection;
 import original.apache.http.HttpHost;
 import original.apache.http.annotation.ThreadSafe;
@@ -214,8 +214,8 @@ public class PoolingHttpClientConnectionManager
             final HttpRoute route,
             final Object state) {
         Args.notNull(route, "HTTP route");
-        if (Log.isLoggable(TAG, Log.DEBUG)) {
-            Log.d(TAG, "Connection request: " + format(route, state) + formatStats(route));
+        if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+            Logger.d(TAG, "Connection request: " + format(route, state) + formatStats(route));
         }
         final Future<CPoolEntry> future = this.pool.lease(route, state, null);
         return new ConnectionRequest() {
@@ -245,8 +245,8 @@ public class PoolingHttpClientConnectionManager
                 throw new InterruptedException();
             }
             Asserts.check(entry.getConnection() != null, "Pool entry with no connection");
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "Connection leased: " + format(entry) + formatStats(entry.getRoute()));
+            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                Logger.d(TAG, "Connection leased: " + format(entry) + formatStats(entry.getRoute()));
             }
             return CPoolProxy.newProxy(entry);
         } catch (final TimeoutException ex) {
@@ -269,20 +269,20 @@ public class PoolingHttpClientConnectionManager
                 if (conn.isOpen()) {
                     entry.setState(state);
                     entry.updateExpiry(keepalive, tunit != null ? tunit : TimeUnit.MILLISECONDS);
-                    if (Log.isLoggable(TAG, Log.DEBUG)) {
+                    if (Logger.isLoggable(TAG, Logger.DEBUG)) {
                         final String s;
                         if (keepalive > 0) {
                             s = "for " + (double) keepalive / 1000 + " seconds";
                         } else {
                             s = "indefinitely";
                         }
-                        Log.d(TAG, "Connection " + format(entry) + " can be kept alive " + s);
+                        Logger.d(TAG, "Connection " + format(entry) + " can be kept alive " + s);
                     }
                 }
             } finally {
                 this.pool.release(entry, conn.isOpen() && entry.isRouteComplete());
-                if (Log.isLoggable(TAG, Log.DEBUG)) {
-                    Log.d(TAG, "Connection released: " + format(entry) + formatStats(entry.getRoute()));
+                if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                    Logger.d(TAG, "Connection released: " + format(entry) + formatStats(entry.getRoute()));
                 }
             }
         }
@@ -346,30 +346,30 @@ public class PoolingHttpClientConnectionManager
 
     public void shutdown() {
         if (this.isShutDown.compareAndSet(false, true)) {
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "Connection manager is shutting down");
+            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                Logger.d(TAG, "Connection manager is shutting down");
             }
             try {
                 this.pool.shutdown();
             } catch (final IOException ex) {
-                Log.d(TAG, "I/O exception shutting down connection manager", ex);
+                Logger.d(TAG, "I/O exception shutting down connection manager", ex);
             }
-            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                Log.d(TAG, "Connection manager shut down");
+            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                Logger.d(TAG, "Connection manager shut down");
             }
         }
     }
 
     public void closeIdleConnections(final long idleTimeout, final TimeUnit tunit) {
-        if (Log.isLoggable(TAG, Log.DEBUG)) {
-            Log.d(TAG, "Closing connections idle longer than " + idleTimeout + " " + tunit);
+        if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+            Logger.d(TAG, "Closing connections idle longer than " + idleTimeout + " " + tunit);
         }
         this.pool.closeIdle(idleTimeout, tunit);
     }
 
     public void closeExpiredConnections() {
-        if (Log.isLoggable(TAG, Log.DEBUG)) {
-            Log.d(TAG, "Closing expired connections");
+        if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+            Logger.d(TAG, "Closing expired connections");
         }
         this.pool.closeExpired();
     }

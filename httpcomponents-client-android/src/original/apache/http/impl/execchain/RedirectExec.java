@@ -31,7 +31,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
-import android.util.Log;
+import org.kman.apache.http.logging.Logger;
 import original.apache.http.HttpEntityEnclosingRequest;
 import original.apache.http.HttpException;
 import original.apache.http.HttpHost;
@@ -138,8 +138,8 @@ public class RedirectExec implements ClientExecChain {
                     if (!currentRoute.getTargetHost().equals(newTarget)) {
                         final AuthState targetAuthState = context.getTargetAuthState();
                         if (targetAuthState != null) {
-                            if (Log.isLoggable(TAG, Log.DEBUG)) {
-                                Log.d(TAG, "Resetting target auth state");
+                            if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                                Logger.d(TAG, "Resetting target auth state");
                             }
                             targetAuthState.reset();
                         }
@@ -147,8 +147,8 @@ public class RedirectExec implements ClientExecChain {
                         if (proxyAuthState != null) {
                             final AuthScheme authScheme = proxyAuthState.getAuthScheme();
                             if (authScheme != null && authScheme.isConnectionBased()) {
-                                if (Log.isLoggable(TAG, Log.DEBUG)) {
-                                    Log.d(TAG, "Resetting proxy auth state");
+                                if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                                    Logger.d(TAG, "Resetting proxy auth state");
                                 }
                                 proxyAuthState.reset();
                             }
@@ -156,8 +156,8 @@ public class RedirectExec implements ClientExecChain {
                     }
 
                     currentRoute = this.routePlanner.determineRoute(newTarget, currentRequest, context);
-                    if (Log.isLoggable(TAG, Log.DEBUG)) {
-                        Log.d(TAG, "Redirecting to '" + uri + "' via " + currentRoute);
+                    if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                        Logger.d(TAG, "Redirecting to '" + uri + "' via " + currentRoute);
                     }
                     EntityUtils.consume(response.getEntity());
                     response.close();
@@ -176,8 +176,8 @@ public class RedirectExec implements ClientExecChain {
                 try {
                     EntityUtils.consume(response.getEntity());
                 } catch (final IOException ioex) {
-                    if (Log.isLoggable(TAG, Log.DEBUG)) {
-                        Log.d(TAG, "I/O error while releasing connection", ioex);
+                    if (Logger.isLoggable(TAG, Logger.DEBUG)) {
+                        Logger.d(TAG, "I/O error while releasing connection", ioex);
                     }
                 } finally {
                     response.close();
