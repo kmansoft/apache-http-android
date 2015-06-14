@@ -35,4 +35,4 @@ In the official release, Apache Commons logging has been replaced with direct ca
 
 That's great, but in my app, I need to be able to log to a file (for remote debugging).
 
-Now an application can supply callbacks (one for wire level logging, one for all the reset) and write log output to a file, or whatever.
+Now an application can supply callbacks, [one for wire level logging, one for all the rest](https://github.com/kmansoft/apache-http-android/tree/master/httpcomponents-client-android/src/org/kman/apache/http/logging) and write log output to a file, or whatever.
