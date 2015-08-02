@@ -110,7 +110,15 @@ class HttpClientConnectionOperator {
             sock.setSoTimeout(socketConfig.getSoTimeout());
             sock.setReuseAddress(socketConfig.isSoReuseAddress());
             sock.setTcpNoDelay(socketConfig.isTcpNoDelay());
-            sock.setKeepAlive(socketConfig.isSoKeepAlive());
+
+            // Fails in ARC runtime (Chrome / Chrome OS)
+            try {
+                sock.setKeepAlive(socketConfig.isSoKeepAlive());
+            }
+            catch (IOException x) {
+                Logger.w(TAG, "Ignoring exception in setKeepAlive", x);
+            }
+
             final int linger = socketConfig.getSoLinger();
             if (linger >= 0) {
                 sock.setSoLinger(linger > 0, linger);
