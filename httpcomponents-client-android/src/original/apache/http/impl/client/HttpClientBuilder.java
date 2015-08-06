@@ -205,6 +205,8 @@ public class HttpClientBuilder {
                 vi.getRelease() : VersionInfo.UNAVAILABLE;
         DEFAULT_USER_AGENT = "Apache-HttpClient/" + release + " (java 1.5)";
     }
+    
+    public static final String NO_USER_AGENT = new String(); 
 
     public static HttpClientBuilder create() {
         return new HttpClientBuilder();
@@ -799,7 +801,9 @@ public class HttpClientBuilder {
         if (httpprocessor == null) {
 
             String userAgent = this.userAgent;
-            if (userAgent == null) {
+            if (userAgent == NO_USER_AGENT) {
+            	userAgent = null;
+            } else if (userAgent == null) {
                 if (systemProperties) {
                     userAgent = System.getProperty("http.agent");
                 }
