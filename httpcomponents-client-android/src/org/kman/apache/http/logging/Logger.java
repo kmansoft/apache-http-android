@@ -27,7 +27,7 @@ public class Logger {
 			return callback.isLoggable(tag, level);
 		}
 
-		return android.util.Log.isLoggable(tag, level);
+		return Log.isLoggable(tag, level);
 	}
 
 	public static void d(String tag, String msg) {
