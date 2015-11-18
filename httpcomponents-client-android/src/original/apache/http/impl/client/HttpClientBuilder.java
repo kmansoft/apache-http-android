@@ -196,15 +196,21 @@ public class HttpClientBuilder {
     private int maxConnPerRoute = 0;
 
     private List<Closeable> closeables;
-
-    static final String DEFAULT_USER_AGENT;
-    static {
-        final VersionInfo vi = VersionInfo.loadVersionInfo
-                ("org.apache.http.client", HttpClientBuilder.class.getClassLoader());
-        final String release = (vi != null) ?
-                vi.getRelease() : VersionInfo.UNAVAILABLE;
-        DEFAULT_USER_AGENT = "Apache-HttpClient/" + release + " (java 1.5)";
-    }
+    
+    /*
+     * kman: put this in a nested class so it's not initialized on demand (very slow),
+     * and hopefully not at all if the client app supplied a user agent
+     */
+    private static class DefaultUserAgent {
+		static final String DEFAULT_USER_AGENT;
+		static {
+			final VersionInfo vi = VersionInfo.loadVersionInfo
+					("original.apache.http.client", HttpClientBuilder.class.getClassLoader());
+			final String release = (vi != null) ?
+					vi.getRelease() : VersionInfo.UNAVAILABLE;
+			DEFAULT_USER_AGENT = "Apache-HttpClient/" + release + " (java 1.5)";
+		}
+	}
     
     public static final String NO_USER_AGENT = new String(); 
 
@@ -808,7 +814,7 @@ public class HttpClientBuilder {
                     userAgent = System.getProperty("http.agent");
                 }
                 if (userAgent == null) {
-                    userAgent = DEFAULT_USER_AGENT;
+                    userAgent = DefaultUserAgent.DEFAULT_USER_AGENT;
                 }
             }
 
