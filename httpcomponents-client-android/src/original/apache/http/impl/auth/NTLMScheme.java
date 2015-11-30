@@ -26,6 +26,10 @@
  */
 package original.apache.http.impl.auth;
 
+import java.util.Locale;
+
+import org.kman.apache.http.logging.Logger;
+
 import original.apache.http.Header;
 import original.apache.http.HttpRequest;
 import original.apache.http.annotation.NotThreadSafe;
@@ -47,6 +51,9 @@ import original.apache.http.util.CharArrayBuffer;
  */
 @NotThreadSafe
 public class NTLMScheme extends AuthSchemeBase {
+
+    private static final String TAG = "NTLMScheme";
+    private static /* final */ boolean LOG_AUTH = false;
 
     enum State {
         UNINITIATED,
@@ -95,17 +102,32 @@ public class NTLMScheme extends AuthSchemeBase {
         return true;
     }
 
+    private static final int MAX_CHALLENGE_COUNT = 10;
+    private static final int MAX_AUTHENTICATE_COUNT = 10;
+
+    private int mParseChallengeCount;
+    private int mAuthenticateCount;
+
     @Override
     protected void parseChallenge(
             final CharArrayBuffer buffer,
             final int beginIndex, final int endIndex) throws MalformedChallengeException {
         this.challenge = buffer.substringTrimmed(beginIndex, endIndex);
+
+        // DEBUG
+        Logger.i(TAG, String.format(Locale.US, "parseChallenge: challenge = \"%s\", this.state = \"%s\"",
+                this.challenge, this.state));
+
         if (this.challenge.length() == 0) {
             if (this.state == State.UNINITIATED) {
                 this.state = State.CHALLENGE_RECEIVED;
             } else {
                 this.state = State.FAILED;
             }
+        } else if (mParseChallengeCount++ < MAX_CHALLENGE_COUNT) {
+            // kman: misconfigured load balancers???
+            Logger.i(TAG, String.format(Locale.US, "parseChallenge: retrying State.MSG_TYPE2_RECEVIED"));
+            this.state = State.MSG_TYPE2_RECEVIED;
         } else {
             if (this.state.compareTo(State.MSG_TYPE1_GENERATED) < 0) {
                 this.state = State.FAILED;
@@ -127,15 +149,42 @@ public class NTLMScheme extends AuthSchemeBase {
              "Credentials cannot be used for NTLM authentication: "
               + credentials.getClass().getName());
         }
+
+        if (LOG_AUTH) {
+            // kman: logging
+            Logger.i(TAG, String.format(Locale.US, "authenticate: challenge = \"%s\", old state = \"%s\"", this.challenge,
+                this.state));
+        }
+
+        if (this.state == State.FAILED && mAuthenticateCount++ < MAX_AUTHENTICATE_COUNT) {
+            // kman: misconfigured load balancers???
+            Logger.i(TAG, String.format(Locale.US, "authenticate: retrying FAILED -> CHALLENGE_RECEIVED"));
+            this.state = State.CHALLENGE_RECEIVED;
+        }
+
         String response = null;
         if (this.state == State.FAILED) {
             throw new AuthenticationException("NTLM authentication failed");
         } else if (this.state == State.CHALLENGE_RECEIVED) {
+
+            if (LOG_AUTH) {
+                // kman: logging
+                Logger.i(TAG, String.format(Locale.US, "authenticate: generate type 1, domain = %s, workstatation = %s",
+                        ntcredentials.getDomain(), ntcredentials.getWorkstation()));
+            }
+
             response = this.engine.generateType1Msg(
                     ntcredentials.getDomain(),
                     ntcredentials.getWorkstation());
             this.state = State.MSG_TYPE1_GENERATED;
         } else if (this.state == State.MSG_TYPE2_RECEVIED) {
+            if (LOG_AUTH) {
+                // kman: logging
+                Logger.i(TAG, String.format(Locale.US,
+                        "authenticate: generate type 3, username = %s, domain = %s, workstatation = %s",
+                        ntcredentials.getUserName(), ntcredentials.getDomain(), ntcredentials.getWorkstation()));
+            }
+
             response = this.engine.generateType3Msg(
                     ntcredentials.getUserName(),
                     ntcredentials.getPassword(),
@@ -154,6 +203,13 @@ public class NTLMScheme extends AuthSchemeBase {
         }
         buffer.append(": NTLM ");
         buffer.append(response);
+
+        if (LOG_AUTH) {
+            // kman: logging
+            Logger.i(TAG, String.format(Locale.US,
+                "authenticate: response = \"%s\", new state = \"%s\"", response, this.state));
+        }
+
         return new BufferedHeader(buffer);
     }
 
