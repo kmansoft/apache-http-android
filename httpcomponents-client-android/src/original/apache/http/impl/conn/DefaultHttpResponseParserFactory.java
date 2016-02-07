@@ -69,7 +69,7 @@ public class DefaultHttpResponseParserFactory implements HttpMessageParserFactor
         this(null, null);
     }
 
-    public HttpMessageParser create(final SessionInputBuffer buffer,
+    public HttpMessageParser<HttpResponse> create(final SessionInputBuffer buffer,
             final MessageConstraints constraints) {
         return new DefaultHttpResponseParser(buffer, lineParser, responseFactory, constraints);
     }
