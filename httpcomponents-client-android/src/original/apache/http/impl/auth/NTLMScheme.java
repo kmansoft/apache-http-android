@@ -102,12 +102,6 @@ public class NTLMScheme extends AuthSchemeBase {
         return true;
     }
 
-    private static final int MAX_CHALLENGE_COUNT = 10;
-    private static final int MAX_AUTHENTICATE_COUNT = 10;
-
-    private int mParseChallengeCount;
-    private int mAuthenticateCount;
-
     @Override
     protected void parseChallenge(
             final CharArrayBuffer buffer,
@@ -124,10 +118,6 @@ public class NTLMScheme extends AuthSchemeBase {
             } else {
                 this.state = State.FAILED;
             }
-        } else if (mParseChallengeCount++ < MAX_CHALLENGE_COUNT) {
-            // kman: misconfigured load balancers???
-            Logger.i(TAG, String.format(Locale.US, "parseChallenge: retrying State.MSG_TYPE2_RECEVIED"));
-            this.state = State.MSG_TYPE2_RECEVIED;
         } else {
             if (this.state.compareTo(State.MSG_TYPE1_GENERATED) < 0) {
                 this.state = State.FAILED;
@@ -154,12 +144,6 @@ public class NTLMScheme extends AuthSchemeBase {
             // kman: logging
             Logger.i(TAG, String.format(Locale.US, "authenticate: challenge = \"%s\", old state = \"%s\"", this.challenge,
                 this.state));
-        }
-
-        if (this.state == State.FAILED && mAuthenticateCount++ < MAX_AUTHENTICATE_COUNT) {
-            // kman: misconfigured load balancers???
-            Logger.i(TAG, String.format(Locale.US, "authenticate: retrying FAILED -> CHALLENGE_RECEIVED"));
-            this.state = State.CHALLENGE_RECEIVED;
         }
 
         String response = null;
